@@ -5,7 +5,7 @@ import "./App.css";
 
 class App extends Component {
 
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  state = { storageValue: 0 };
 
   componentDidMount() {
     // Provide all dapp utils on window Object to provide quick accessibility
@@ -14,7 +14,7 @@ class App extends Component {
     activateDApp().then(() => this.runExample()).catch(e => console.log(e));    
   };
 
-  runExample = () => {
+  runExample() {
     const { SimpleStorage } = window.dapp.contracts;
     SimpleStorage.deployed().then(async instance => {
       // set value on contract
