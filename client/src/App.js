@@ -1,49 +1,53 @@
 import React, { Component } from "react";
 import activateDApp from "./utils/activateDApp";
 
-import "./App.css";
+import PreLoad from "./views/home/PreLoad";
+import Nominator from "./views/home/Nominator";
 
 class App extends Component {
+  
+  state = {}
 
-  state = { storageValue: 0 };
-
-  componentDidMount() {
-    // Provide all dapp utils on window Object to provide quick accessibility
-    // run our example after successful provision
-    // log error, if provisioning failed
-    activateDApp().then(() => this.runExample()).catch(e => console.log(e));    
-  };
-
-  runExample() {
-    const { SimpleStorage } = window.dapp.contracts;
-    SimpleStorage.deployed().then(async instance => {
-      // set value on contract
-      await instance.setMap(5, 50, { from: window.dapp.accounts[0] });
-      // retrieve value from contract and set to state
-      const mapValue = await instance.getMap(5);
-      // update state
-      this.setState({ ...this.state, storageValue: `${mapValue}` });
-    })
+  setOwnState(state, callback = () => { }) {
+    this.setState({ ...this.state, ...state }, callback);
   }
 
+  resetLoadingState() {
+    this.setOwnState({ dAppLoading: true, dAppInit: false, dAppInitFailed: false, error: "" });
+  }
+
+  loadDApp(force = false) {
+    // tell state that dApp is loading
+    this.resetLoadingState();
+    // Provision all dapp utils on window Object to provide quick accessibility
+    // set app as initiated after successful provisioning
+    // present error, if provisioning failed
+    activateDApp(force).then(() => this.setDAppInitiated()).catch(e => this.setDAppInitFailed(e));
+  }
+
+  setDAppInitiated() {
+    this.setOwnState({ dAppLoading: false, dAppInit: true });
+  }
+
+  setDAppInitFailed(e) {
+    this.setOwnState({ dAppLoading: false, dAppInitFailed: true, error: e });
+  }
+
+  componentDidMount() {
+    this.loadDApp();
+  };
+
   render() {
-    if (!window.dapp) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
+    const { dAppLoading, dAppInitFailed, dAppInit, error } = this.state;
     return (
-      <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try setting/getting value stored on contract.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div>
+      <>
+        {dAppLoading || dAppInitFailed ? (
+          <PreLoad dAppLoading={dAppLoading} dAppInitFailed={dAppInitFailed}
+            reloader={() => this.loadDApp(true)} error={error} />
+        ) : ""}
+
+        { dAppInit ? <Nominator /> : "" }
+      </>
     );
   }
 }
