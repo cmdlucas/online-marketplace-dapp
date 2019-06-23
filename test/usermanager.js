@@ -1,9 +1,10 @@
-const { UserType } = require('../client/src/utils/constants');
 const UserProfileManager = artifacts.require("UserProfileManager");
 
 // Test UserManager Logic
+// Ensure to run test only when you have up to 5 accounts in your wallet provider
 contract("UserProfileManager", async accounts => {
     let instance;
+    const UserType = { Owner: 0, Admin: 1, ShopOwner: 2 }
     const [owner, admin, adminTwo, shopOwner, shopOwnerTwo] = accounts;
 
     beforeEach(async () => {

@@ -5,8 +5,8 @@ import { Owned } from './Owned.sol';
 // It also provides permissions through its modifiers
 contract UserIdentity is Owned {
 
-  mapping(address => bool) admin;
-  mapping(address => bool) shop_owner;
+  mapping(address => bool) internal admin;
+  mapping(address => bool) internal shop_owner;
 
   modifier isAdmin {
     require(admin[msg.sender], "Only admins can do this"); _;

@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 // This contract provides owner power
 
 contract Owned {
-  address owner;
+  address internal owner;
 
   modifier isOwner {
       require(msg.sender == owner, "Only the owner can perform this action."); _;

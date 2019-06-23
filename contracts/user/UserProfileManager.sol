@@ -20,7 +20,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     UserType userType;
   }
 
-  mapping(address => Profile) profile;
+  mapping(address => Profile) internal profile;
 
   modifier ownsAdminProfile(address user) {
     // require that the profile is owned by either the admin or app owner is the caller
