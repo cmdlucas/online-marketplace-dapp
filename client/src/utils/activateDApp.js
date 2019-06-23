@@ -8,7 +8,7 @@ import SimpleStorageArtifact from "../contracts/SimpleStorage.json";
 export default function activateDApp(force = false) {
     return new Promise((resolve, reject) => {
         
-        // reject if provisioned before and not forced
+        // reject if provisioned before and this call is not forced
         if (window.dapp && !force) {
             reject(
                 new Error("dApp utils already provisioned. Access with `window.dapp` or use activateDApp(true) to force reprovision")

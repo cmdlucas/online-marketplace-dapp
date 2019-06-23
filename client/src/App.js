@@ -8,8 +8,8 @@ class App extends Component {
   state = { storageValue: 0 };
 
   componentDidMount() {
-    // Provide all dapp utils on window Object to provide quick accessibility
-    // run our example after successful provision
+    // Provision all dapp utils on window Object to provide quick accessibility
+    // run our example after successful provisioning
     // log error, if provisioning failed
     activateDApp().then(() => this.runExample()).catch(e => console.log(e));    
   };
