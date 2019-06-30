@@ -1,6 +1,6 @@
 const UserProfileManager = artifacts.require("UserProfileManager");
 
-// Test UserManager Logic
+// Test UserProfileManager's Logic
 // Ensure to run test only when you have up to 5 accounts in your wallet provider
 contract("UserProfileManager", async accounts => {
     let instance;
@@ -96,6 +96,29 @@ contract("UserProfileManager", async accounts => {
         assert.equal(profile.firstName, "Adams", "The profile did not stay the same.");
     });
 
+    
+    it("should deactivate admin", async () => {
+        try {
+            // Deactive admin
+            await instance.deActivateAdmin( admin, { from: owner } );
+        } catch (e) { }
+        // Get updated profile
+        const profile = await instance.getUserProfile.call(admin);
+        // This admin's profile should have been deactivated
+        assert.equal(profile.active, false, "The profile was not deactivated.");
+    });
+
+    it("should activate admin", async () => {
+        try {
+            // Deactive admin
+            await instance.activateAdmin( admin, { from: owner } );
+        } catch (e) { }
+        // Get updated profile
+        const profile = await instance.getUserProfile.call(admin);
+        // This admin's profile should have been activated
+        assert.equal(profile.active, true, "The profile was not activated.");
+    });
+
     it("should create new profile for shop owner", async () => {
         try {
             // Create new shop owner profile
@@ -148,6 +171,28 @@ contract("UserProfileManager", async accounts => {
         assert.equal(profile.firstName, "Ketura", "The profile was not updated.");
     });
 
+    it("should deactivate shopowner", async () => {
+        try {
+            // Deactive shop owner
+            await instance.deActivateShopOwner( shopOwner, { from: admin } );
+        } catch (e) { }
+        // Get updated profile
+        const profile = await instance.getUserProfile.call(shopOwner);
+        // This shop owner's profile should have been deactivated
+        assert.equal(profile.active, false, "The profile was not deactivated.");
+    });
+
+    it("should activate admin", async () => {
+        try {
+            // Deactive admin
+            await instance.activateShopOwner( shopOwner, { from: admin } );
+        } catch (e) { }
+        // Get updated profile
+        const profile = await instance.getUserProfile.call(shopOwner);
+        // This shop owner's profile should have been activated
+        assert.equal(profile.active, true, "The profile was not activated.");
+    });
+
     it("shop owner should not be able to update another shop owner's profile", async () => {
         try {
             // Create new shop owner profile
@@ -166,4 +211,23 @@ contract("UserProfileManager", async accounts => {
         // new shop owner's profile should remain as Tora
         assert.equal(profile.firstName, "Tora", "The profile was updated.");
     });
+
+    it("should return all the admin profiles created thus far", async () => {
+        let profiles;
+        try {
+            profiles = await instance.getAdminsProfiles.call();
+        } catch (e) { }
+        // This shop owner's profile should have been activated
+        assert.equal(profiles[1].length, 2, "The profiles returned don't match those created thus far.");
+    });
+
+    it("should return all the shop owners profiles created thus far", async () => {
+        let profiles;
+        try {
+            profiles = await instance.getShopOwnersProfiles.call();
+        } catch (e) { }
+        // This shop owner's profile should have been activated
+        assert.equal(profiles[1].length, 2, "The profiles returned don't match those created thus far.");
+    });
+
 });
