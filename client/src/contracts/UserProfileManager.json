@@ -18337,10 +18337,16 @@
       "links": {},
       "address": "0x52d2309b22E6908D8e0582c5f8a49CAE5fB61dA0",
       "transactionHash": "0xd57e23fa01dace21da0976ca89f979468c7bec23a128bb0e682db3e5bc034bd9"
+    },
+    "1561910454631": {
+      "events": {},
+      "links": {},
+      "address": "0x97A3a02012ef32457cA684C922218096A0A8f88E",
+      "transactionHash": "0x842d4e3688fd84ba2b1210a2697829cb9d9d699eb7e0b551cf795625d492966b"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-06-30T14:29:50.214Z",
+  "updatedAt": "2019-06-30T16:01:18.832Z",
   "devdoc": {
     "methods": {
       "addNewProfile(address,uint8,string,string)": {

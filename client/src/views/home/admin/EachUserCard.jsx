@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { editprofileurl } from '../../../utils/constants';
+import { editprofileurl, UserType } from '../../../utils/constants';
 
 class EachUserCard extends Component {
     render() {
@@ -31,14 +31,16 @@ class EachUserCard extends Component {
                                 <Link to={editprofileurl + "/" + type + "/" + (index - 1)}>
                                     <button className="btn btn-dark">
                                         <FontAwesomeIcon icon="edit" />
+                                        {' '}
                                         <span>Edit</span>
                                     </button>
                                 </Link>
                             </div>
-                            {active && (
+                            {active && type !== UserType.Owner && (
                                 <div className="p-2">
                                     <button className="btn btn-danger" onClick={() => deActivate()}>
                                         <FontAwesomeIcon icon="cog" />
+                                        {' '}
                                         <span>Deactivate</span>
                                     </button>
                                 </div>

@@ -32,7 +32,7 @@ export const profilesFetcher = type => {
                         active: profiles[1][i],
                         firstName: hexToString(profiles[2][i]),
                         lastName: hexToString(profiles[3][i]),
-                        userType: profiles[4][i]
+                        userType: parseInt(profiles[4][i])
                     };
                     allProfiles.push(profile);                    
                 }
@@ -44,7 +44,27 @@ export const profilesFetcher = type => {
     })
 }
 
-export const profilesUpdater = p => {
+export const profileCreater = p => {
+    return new Promise( async (resolve, reject) => {
+        if(window.dapp) {
+            const { contracts: { UserProfileManager }, defaultProfile } = window.dapp;
+            try {
+                // Get contract instance
+                const instance = await UserProfileManager.deployed();
+                // update contract state
+                await instance.addNewProfile(
+                    p.addr, p.userType, p.firstName, p.lastName, 
+                    { from: defaultProfile.addr }
+                );
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        }
+    })
+}
+
+export const profileUpdater = p => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
             const { contracts: { UserProfileManager }, defaultProfile } = window.dapp;
@@ -89,7 +109,7 @@ export const adminActivator = (reqType, address) => {
     })
 }
 
-export const showOwnerActivator = (reqType, address) => {
+export const shopOwnerActivator = (reqType, address) => {
     return new Promise (async (resolve, reject) => {
         if(window.dapp) {
             const { contracts: { UserProfileManager }, defaultProfile } = window.dapp;

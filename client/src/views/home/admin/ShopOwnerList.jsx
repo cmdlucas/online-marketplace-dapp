@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
 import EachUserCard from './EachUserCard';
-import { profilesFetcher } from '../../../utils/dapp/profileWorker';
+import { profilesFetcher, shopOwnerActivator } from '../../../utils/dapp/profileWorker';
 import { UserType } from '../../../utils/constants/a.constant';
+import { setShopOwnersProfiles } from '../../../model/redux/action/profiles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { createprofileurl } from '../../../utils/constants';
 
 class ShopOwnerList extends Component {
     state = { loaded: false, shopowners: [] };
@@ -14,27 +20,36 @@ class ShopOwnerList extends Component {
     loadShopOwners() {
         profilesFetcher(UserType.ShopOwner).then(shopowners => {
             //extract shopowner profiles
-            this.setOwnState({ shopowners: shopowners, loaded: true })
+            this.setOwnState({ loaded: true });
+            this.props.setProfiles(shopowners);
         }).catch(e => {
-            alert(`Failed. Could not fetch shopowners. See console for error(s).`);
+            alert(`Failed. Could not fetch shop owners. See console for error(s).`);
             console.log(e)
         });
     }
 
-    editShopOwnerProfile(index) {
-
+    accountActivator(active, index) {
+        // perform activation action admin in global state for faster UI response
+        const shopowners = this.props.shopOwnerProfiles;
+        shopowners[index].active = active;
+        this.props.setProfiles(shopowners);
+        // deActivate admin in storage
+        shopOwnerActivator(active, shopowners[index].addr).catch(e => {
+            console.log(e);
+            alert(`Failed. Couldn't ${active ? "activate" : "deactivate"} shop owner. See console for error(s). Reverting changes...`);
+            shopowners[index].active = !active;
+            this.props.setProfiles(shopowners);
+        })
     }
 
     activateShopOwner(index) {
-
+        //activate admin account
+        this.accountActivator(true, index);
     }
 
     deActivateShopOwner(index) {
-        // deActivate shopowner in state for fast response
-        const shopowners = [...this.state.shopowners];
-        shopowners[index].active = false;
-        this.setOwnState({ shopowners: [...shopowners] });
-        // deActivate shopowner in storage        
+        //deactivate admin account
+        this.accountActivator(false, index);
     }
 
     componentDidMount() {
@@ -42,21 +57,33 @@ class ShopOwnerList extends Component {
     }
 
     render() {
-        const { loaded, shopowners } = this.state;
+        const { loaded } = this.state;
+        const shopowners = this.props.shopOwnerProfiles;
         return (
             <>
                 <div className="row mt-5 no-gutters">
                     <div className="col-md-12">
                         <div className="card">
                             <div className="card-header">
-                                <h5>ShopOwners List</h5>
+                                <div className="row">
+                                    <div className="col">
+                                        <h5>Shop Owner List</h5>
+                                    </div>
+                                    <div className="col d-flex flex-row-reverse flex-nowrap">
+                                        <Link to={createprofileurl + "/2"}>
+                                            <FontAwesomeIcon icon="plus-square" />
+                                            {' '}
+                                            <span>New Shop Owner</span>
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
                             <div className="card-body">
                                 {!loaded && (
                                     <Spinner color="secondary" />
                                 )}
                                 {loaded && (<>
-                                    {shopowners.length === 0 ? <h5>No shopowner found</h5> : ""}
+                                    {shopowners.length === 0 ? <h5>No shop owner found</h5> : ""}
                                     <div className="row">
                                     {
                                         shopowners.map((shopowner, index) => {
@@ -84,4 +111,12 @@ class ShopOwnerList extends Component {
     }
 }
 
-export default ShopOwnerList;
+const mapStateToProps = state => ({
+    shopOwnerProfiles: state.shopOwnersProfiles
+})
+
+const mapDispatchToProps = dispatch => ({
+    setProfiles: profiles => dispatch(setShopOwnersProfiles(profiles))
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShopOwnerList));

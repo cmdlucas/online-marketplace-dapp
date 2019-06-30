@@ -11,6 +11,8 @@ export const adminProfiles = (state = [], action) => {
 
 export const shopOwnersProfiles = (state = [], action) => {
     switch(action.type) {
+        case p.set_shop_owner:
+            return [...action.value];
         default:
             return [...state];
     }

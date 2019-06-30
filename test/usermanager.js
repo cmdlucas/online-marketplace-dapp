@@ -218,7 +218,7 @@ contract("UserProfileManager", async accounts => {
             profiles = await instance.getAdminsProfiles.call();
         } catch (e) { }
         // This shop owner's profile should have been activated
-        assert.equal(profiles[1].length, 1, "The profiles returned don't match those created thus far.");
+        assert.equal(profiles[1].length, 2, "The profiles returned don't match those created thus far.");
     });
 
     it("should return all the shop owners profiles created thus far", async () => {

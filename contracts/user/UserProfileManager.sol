@@ -50,6 +50,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
                 string memory firstName, string memory lastName) public
   {
     // set address so that modififer can be aware
+    // to grant specific access to user in the future
     if (uType == uint8(UserType.Admin)) {
       setAdminAddress(user);
     }
@@ -63,7 +64,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
 
   /**
    * @dev Set user profile based on user type
-   * @param user - do not rely on msg.sender because of function versatility
+   * @param user - do not assume msg.sender as the user profile we're adding: this function is versatile
    * @param uType can be any of 0, 1 or 2
    */
   function addProfile(address user, uint8 uType,
@@ -76,9 +77,31 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     // set shop owner profile
     else if (uType == uint8(UserType.ShopOwner)) {
       addShopOwnerProfile(user, firstName, lastName);
+    }
     // emit success event
     emitActionSuccess("Profile added succesfully");
-    }
+  }
+
+  /**
+   * @dev Create admin profile
+   */
+  function addAdminProfile(address user, string memory firstName,
+                            string memory lastName) private isOwner
+  {
+    // set profile
+    profile[user] = Profile(user, true, firstName, lastName, UserType.Admin);
+  }
+
+  /**
+   * @dev Create shop owner profile
+   */
+  function addShopOwnerProfile(address user, string memory firstName,
+                            string memory lastName) private isAdmin
+  {
+    // set profile
+    profile[user] = Profile(user, true, firstName, lastName, UserType.ShopOwner);
+    // emit success event
+    emitActionSuccess("Shop owner profile created succesfully");
   }
 
   /**
@@ -113,28 +136,6 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     profile[user] = Profile(user, true, firstName, lastName, UserType.Owner);
     // emit success event
     emitActionSuccess("Owner profile created successfully");
-  }
-
-  /**
-   * @dev Create admin profile
-   */
-  function addAdminProfile(address user, string memory firstName,
-                            string memory lastName) private isOwner
-  {
-    // set profile
-    profile[user] = Profile(user, true, firstName, lastName, UserType.Admin);
-  }
-
-  /**
-   * @dev Create shop owner profile
-   */
-  function addShopOwnerProfile(address user, string memory firstName,
-                            string memory lastName) private isAdmin
-  {
-    // set profile
-    profile[user] = Profile(user, true, firstName, lastName, UserType.ShopOwner);
-    // emit success event
-    emitActionSuccess("Shop owner profile created succesfully");
   }
 
   /**

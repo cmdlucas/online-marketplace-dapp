@@ -47,7 +47,7 @@ class App extends Component {
             reloader={() => this.loadDApp(true)} error={error} />
         ) : ""}
 
-        { dAppInit ? <> <Nominator /> <ModalSelector /> </>: "" }
+        { dAppInit ? <> <Nominator />  <ModalSelector /> </>: "" }
       </>
     );
   }
