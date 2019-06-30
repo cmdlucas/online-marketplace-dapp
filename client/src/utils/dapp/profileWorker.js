@@ -43,3 +43,73 @@ export const profilesFetcher = type => {
         }
     })
 }
+
+export const profilesUpdater = p => {
+    return new Promise(async (resolve, reject) => {
+        if(window.dapp) {
+            const { contracts: { UserProfileManager }, defaultProfile } = window.dapp;
+            try {
+                // Get contract instance
+                const instance = await UserProfileManager.deployed();
+                // update contract state
+                await instance.updateProfile(
+                    p.addr, p.userType, p.firstName, p.lastName, 
+                    { from: defaultProfile.addr }
+                );
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        }
+    })
+}
+
+export const adminActivator = (reqType, address) => {
+    return new Promise (async (resolve, reject) => {
+        if(window.dapp) {
+            const { contracts: { UserProfileManager }, defaultProfile } = window.dapp;
+            try{
+                // get contract instance
+                const instance = await UserProfileManager.deployed();
+                switch(reqType) {
+                    case true: { // activate profile
+                        await instance.activateAdmin(address, { from: defaultProfile.addr });
+                        break;
+                    }
+                    default: { // deactivate profile
+                        await instance.deActivateAdmin(address, { from: defaultProfile.addr });
+                        break;
+                    }
+                }
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        }
+    })
+}
+
+export const showOwnerActivator = (reqType, address) => {
+    return new Promise (async (resolve, reject) => {
+        if(window.dapp) {
+            const { contracts: { UserProfileManager }, defaultProfile } = window.dapp;
+            try{
+                // get contract instance
+                const instance = await UserProfileManager.deployed();
+                switch(reqType) {
+                    case true: { // activate profile
+                        await instance.activateShopOwner(address, { from: defaultProfile.addr });
+                        break;
+                    }
+                    default: { // deactivate profile
+                        await instance.deActivateShopOwner(address, { from: defaultProfile.addr });
+                        break;
+                    }
+                }
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
+        }
+    })
+}

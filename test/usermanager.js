@@ -1,6 +1,6 @@
 const UserProfileManager = artifacts.require("UserProfileManager");
 
-// Test UserManager Logic
+// Test UserProfileManager's Logic
 // Ensure to run test only when you have up to 5 accounts in your wallet provider
 contract("UserProfileManager", async accounts => {
     let instance;

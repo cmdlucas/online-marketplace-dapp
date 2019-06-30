@@ -11,22 +11,6 @@ class ShopOwnerList extends Component {
         this.setState({ ...this.state, ...state }, callback);
     }
 
-    editShopOwnerProfile(index, addr) {
-
-    }
-
-    deActivateShopOwner(index, addr) {
-        // deActivate shopowner in state for fast response
-        const shopowners = [...this.state.shopowners];
-        shopowners[index].active = false;
-        this.setOwnState({ shopowners: [...shopowners] });
-        // deActivate shopowner in storage        
-    }
-
-    activateShopOwner(index, addr) {
-
-    }
-
     loadShopOwners() {
         profilesFetcher(UserType.ShopOwner).then(shopowners => {
             //extract shopowner profiles
@@ -37,12 +21,24 @@ class ShopOwnerList extends Component {
         });
     }
 
-    componentDidMount() {
-        this.loadShopOwners();
+    editShopOwnerProfile(index) {
+
     }
 
-    componentDidUpdate() {
+    activateShopOwner(index) {
 
+    }
+
+    deActivateShopOwner(index) {
+        // deActivate shopowner in state for fast response
+        const shopowners = [...this.state.shopowners];
+        shopowners[index].active = false;
+        this.setOwnState({ shopowners: [...shopowners] });
+        // deActivate shopowner in storage        
+    }
+
+    componentDidMount() {
+        this.loadShopOwners();
     }
 
     render() {
@@ -69,11 +65,11 @@ class ShopOwnerList extends Component {
                                                     firstName={shopowner.firstName}
                                                     lastName={shopowner.lastName}
                                                     addr={shopowner.addr}
-                                                    type="ShopOwner"
+                                                    typeName="ShopOwner"
+                                                    type={shopowner.userType}
                                                     active={shopowner.active}
-                                                    edit={addr => this.editShopOwnerProfile(index, addr)}
-                                                    activate={addr => this.activateShopOwner(index, addr)}
-                                                    deActivate={addr => this.deActivateShopOwner(index, addr)} />
+                                                    activate={() => this.activateShopOwner(index)}
+                                                    deActivate={() => this.deActivateShopOwner(index)} />
                                             )
                                         })
                                     }

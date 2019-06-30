@@ -1,0 +1,2 @@
+## Integer Overflow and Underflow
+Care has been taken to use `enums` rather than `uint` in order to achieve consistency for different user types. We're only making use of `integers` when hard value is needed. In such cases we check to ensure that the values are within range.

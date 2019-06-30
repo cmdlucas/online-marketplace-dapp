@@ -2,13 +2,15 @@ pragma solidity ^0.5.0;
 import { UserIdentity } from './UserIdentity.sol';
 import '../event/EmitsEvent.sol';
 
-// This contract provides us a way to store users profile
-// and update them based on the permissions declared.
-// 1. dApp Owner (who is also an admin) can create and update admin and shop owner profile
-// 2. dApp Admin can create shop owner profile
-// 3. dApp Admin can update both self and shop owner profile
-// 4. dApp shopOwner can only update their own profile
-
+/** 
+ * @title Users Profile Manager
+ * This contract provides us a way to store users profile
+ * and update them based on the permissions declared.
+ * 1. dApp Owner (who is also an admin) can create and update admin and shop owner profile
+ * 2. dApp Admin can create shop owner profile
+ * 3. dApp Admin can update both self and shop owner profile
+ * 4. dApp shopOwner can only update their own profile
+ */
 contract UserProfileManager is UserIdentity, EmitsEvent {
 
   enum UserType { Owner, Admin, ShopOwner }
@@ -159,24 +161,48 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     emitActionSuccess("Shop owner profile updated succesfully");
   }
 
+  /**
+   * @dev Activate admin account
+   */
   function activateAdmin(address user) public isOwner
   {
+    // activate profile
     profile[user].active = true;
+    // update restriction access controller
+    admin[user] = true;
   }
 
+  /**
+   * @dev Deactivate admin account
+   */
   function deActivateAdmin(address user) public isOwner
   {
+    // deactivate profile
     profile[user].active = false;
+    // update restriction access controller
+    admin[user] = false;
   }
 
+  /**
+   * @dev Activate shop owner account
+   */
   function activateShopOwner(address user) public isAdmin
   {
+    // activate profile
     profile[user].active = true;
+    // update restriction access controller
+    shop_owner[user] = false;
   }
-
+  
+  /**
+   * @dev Deactivate shop owner account
+   */
   function deActivateShopOwner(address user) public isAdmin
   {
+    // deactivate profile
     profile[user].active = false;
+    // update restriction access controller
+    shop_owner[user] = false;
   }
 
   /**
@@ -188,7 +214,6 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     Profile memory p = profile[user];
     return (p.addr, p.active, p.firstName, p.lastName, p.userType);
   }
-
 
   /**
    * @dev Get all users profiles

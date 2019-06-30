@@ -3,6 +3,7 @@ import activateDApp from "./utils/activateDApp";
 
 import PreLoad from "./views/home/PreLoad";
 import Nominator from "./views/home/Nominator";
+import ModalSelector from "./views/modals/ModalSelector";
 
 class App extends Component {
   
@@ -46,7 +47,7 @@ class App extends Component {
             reloader={() => this.loadDApp(true)} error={error} />
         ) : ""}
 
-        { dAppInit ? <Nominator /> : "" }
+        { dAppInit ? <> <Nominator /> <ModalSelector /> </>: "" }
       </>
     );
   }
