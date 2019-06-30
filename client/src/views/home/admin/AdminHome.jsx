@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import AdminList from './AminList';
+import ShopOwnerList from './ShopOwnerList';
+import { UserType } from '../../../utils/constants';
 
-class AdminHome extends Component
-{
+class AdminHome extends Component {
     render() {
-        return <>Admin Home</>;
+        return (
+            <>
+                <p> Welcome {window.dapp.defaultProfile.firstName}, </p>
+                {window.dapp.defaultProfile.userType === UserType.Owner && <AdminList />}
+                <ShopOwnerList />
+            </>
+        );
     }
 }
 

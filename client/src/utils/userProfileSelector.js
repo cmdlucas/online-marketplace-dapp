@@ -19,7 +19,8 @@ const userProfileSelector = async () => {
                         firstName: `${profile.firstName}`,
                         lastName: `${profile.lastName}`,
                         userType: parseInt(profile.userType),
-                        addr: `${profile.addr}`
+                        addr: `${profile.addr}`,
+                        active: profile.active
                     });
                 }
             }

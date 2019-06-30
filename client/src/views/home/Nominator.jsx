@@ -7,14 +7,14 @@ import ShopperHome from './shopper/ShopperHome';
 
 // Nominate view to render based on User Type
 const Nominator = () => {
-    const { userType } = window.dapp.defaultProfile;
+    const { userType, active } = window.dapp.defaultProfile;
     let view = <></>;
     switch(userType) {
-        case UserType.Admin:
-        case UserType.Owner:
+        case UserType.Admin && active:
+        case UserType.Owner && active:
             view = <AdminHome />
             break;
-        case UserType.ShopOwner:
+        case UserType.ShopOwner && active:
             view = <ShopOwnerHome />
             break;
         default:

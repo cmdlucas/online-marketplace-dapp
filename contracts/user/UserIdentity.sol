@@ -4,7 +4,12 @@ import { Owned } from './Owned.sol';
 // This contract defines who a user is
 // It also provides permissions through its modifiers
 contract UserIdentity is Owned {
+  // Arrays to hold all user types;
+  address[] public admins;
+  address[] public shop_owners;
 
+  // Let's have a way to easily check for a user type
+  // mainly because of gas costs when we loop
   mapping(address => bool) internal admin;
   mapping(address => bool) internal shop_owner;
 
@@ -24,16 +29,19 @@ contract UserIdentity is Owned {
   constructor() public {
     // set contract deployer as admin
     admin[msg.sender] = true;
+    admins.push(msg.sender);
   }
 
   function setAdminAddress(address _admin) internal isOwner
   {
     admin[_admin] = true;
+    admins.push(_admin);
   }
 
   function setShopOwnerAddress(address _shop_owner) internal isAdmin
   {
     shop_owner[_shop_owner] = true;
+    shop_owners.push(_shop_owner);
   }
 
 }

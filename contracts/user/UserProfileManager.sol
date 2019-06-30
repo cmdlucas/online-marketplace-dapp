@@ -15,12 +15,13 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
 
   struct Profile {
     address addr;
+    bool active;
     string firstName;
     string lastName;
     UserType userType;
   }
 
-  mapping(address => Profile) internal profile;
+  mapping(address => Profile) profile;
 
   modifier ownsAdminProfile(address user) {
     // require that the profile is owned by either the admin or app owner is the caller
@@ -36,7 +37,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
 
   constructor() public {
     // set my profile as the owner
-    profile[msg.sender] = Profile(msg.sender, "Caleb", "Lucas", UserType.Owner);
+    profile[msg.sender] = Profile(msg.sender, true, "Caleb", "Lucas", UserType.Owner);
   }
 
   /**
@@ -107,7 +108,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
                             string memory lastName) private isOwner
   {
     // set profile
-    profile[user] = Profile(user, firstName, lastName, UserType.Owner);
+    profile[user] = Profile(user, true, firstName, lastName, UserType.Owner);
     // emit success event
     emitActionSuccess("Owner profile created successfully");
   }
@@ -119,7 +120,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
                             string memory lastName) private isOwner
   {
     // set profile
-    profile[user] = Profile(user, firstName, lastName, UserType.Admin);
+    profile[user] = Profile(user, true, firstName, lastName, UserType.Admin);
   }
 
   /**
@@ -129,7 +130,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
                             string memory lastName) private isAdmin
   {
     // set profile
-    profile[user] = Profile(user, firstName, lastName, UserType.ShopOwner);
+    profile[user] = Profile(user, true, firstName, lastName, UserType.ShopOwner);
     // emit success event
     emitActionSuccess("Shop owner profile created succesfully");
   }
@@ -141,7 +142,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
                             string memory lastName) private ownsAdminProfile(user)
   {
     // set profile
-    profile[user] = Profile(user, firstName, lastName, UserType.Admin);
+    profile[user] = Profile(user, true, firstName, lastName, UserType.Admin);
     // emit success event
     emitActionSuccess("Admin profile updated succesfully");
   }
@@ -153,19 +154,91 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
                             string memory lastName) private ownsShopOwnerProfile(user)
   {
     // set profile
-    profile[user] = Profile(user, firstName, lastName, UserType.ShopOwner);
+    profile[user] = Profile(user, true, firstName, lastName, UserType.ShopOwner);
     // emit success event
     emitActionSuccess("Shop owner profile updated succesfully");
+  }
+
+  function activateAdmin(address user) public isOwner
+  {
+    profile[user].active = true;
+  }
+
+  function deActivateAdmin(address user) public isOwner
+  {
+    profile[user].active = false;
+  }
+
+  function activateShopOwner(address user) public isAdmin
+  {
+    profile[user].active = true;
+  }
+
+  function deActivateShopOwner(address user) public isAdmin
+  {
+    profile[user].active = false;
   }
 
   /**
    * @dev Get user profile
    */
-  function getUserProfile(address user) public view returns(address addr,
+  function getUserProfile(address user) public view returns(address addr, bool active,
           string memory firstName, string memory lastName, UserType userType)
   {
     Profile memory p = profile[user];
-    return (p.addr, p.firstName, p.lastName, p.userType);
+    return (p.addr, p.active, p.firstName, p.lastName, p.userType);
+  }
+
+
+  /**
+   * @dev Get all users profiles
+   */
+  function getUsers (address[] memory users) private view returns(address[] memory, bool[] memory,
+          bytes32[] memory, bytes32[] memory, uint8[] memory)
+  {
+    address[] memory addrs = new address[] (users.length);
+    bool[] memory actives = new bool[] (users.length);
+    bytes32[] memory firstNames = new bytes32[] (users.length);
+    bytes32[] memory lastNames = new bytes32[] (users.length);
+    uint8[] memory userTypes = new uint8[] (users.length);
+    for(uint i = 0; i < users.length; i++) {
+      // get profile of this particular admin
+      Profile memory p = profile[users[i]];
+      addrs[i] = p.addr;
+      actives[i] = p.active;
+      string memory fiName = p.firstName;
+      string memory laName = p.lastName;
+      bytes32 fName;
+      bytes32 lName;
+      // convert string to bytes32
+      assembly {
+        fName := mload(add(fiName, 32))
+        lName := mload(add(laName, 32))
+      }
+      // store strings
+      firstNames[i] = fName;
+      lastNames[i] = lName;
+      userTypes[i] = uint8(p.userType);
+    }
+    return (addrs, actives, firstNames, lastNames, userTypes);
+  }
+
+  /**
+   * @dev Get all admins profiles
+   */
+  function getAdminsProfiles() public view returns(address[] memory, bool[] memory, 
+          bytes32[] memory, bytes32[] memory, uint8[] memory)
+  {
+    return getUsers(admins);
+  }
+
+  /**
+   * @dev Get all shopowners profiles
+   */
+  function getShopOwnersProfiles() public view returns(address[] memory, bool[] memory,
+          bytes32[] memory, bytes32[] memory, uint8[] memory)
+  {
+    return getUsers(shop_owners);
   }
 
 }

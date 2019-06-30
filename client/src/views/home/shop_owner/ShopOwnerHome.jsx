@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 class ShopOwnerHome extends Component
 {
     render() {
-        return <>Shop Owner Home</>;
+        return (
+            <>
+                <p> Shop Owner Home </p>
+            </>
+        );
     }
 }
 
