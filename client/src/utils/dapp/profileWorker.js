@@ -41,6 +41,7 @@ export const profilesFetcher = type => {
                 reject(e);
             }
         }
+        reject(`dApp not provisioned.`);
     })
 }
 
@@ -61,6 +62,7 @@ export const profileCreater = p => {
                 reject(e);
             }
         }
+        reject(`dApp not provisioned.`);
     })
 }
 
@@ -81,6 +83,7 @@ export const profileUpdater = p => {
                 reject(e);
             }
         }
+        reject(`dApp not provisioned.`);
     })
 }
 
@@ -106,6 +109,7 @@ export const adminActivator = (reqType, address) => {
                 reject(e);
             }
         }
+        reject(`dApp not provisioned.`);
     })
 }
 
@@ -131,5 +135,6 @@ export const shopOwnerActivator = (reqType, address) => {
                 reject(e);
             }
         }
+        reject(`dApp not provisioned.`);
     })
 }
