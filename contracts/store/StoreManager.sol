@@ -37,6 +37,12 @@ contract StoreManager is EmitsEvent {
     require(ui.fnIsShopOwner(msg.sender), "Only shop owners can do this"); _;
   }
   
+  // restrict access to product
+  modifier ownsProduct(uint _prodId) {
+    require(product[_prodId].productOwner == msg.sender, 
+        "Only the product's owner can do this"); _;
+  }
+  
   // restrict access to owner of the store
   modifier ownsStore(uint _sFID) {
     require(storeFront[_sFID].storeOwner == msg.sender, 
@@ -57,7 +63,7 @@ contract StoreManager is EmitsEvent {
     newIndex = sFIDs.length;
     // todo:: ensure that we are within range of allowed store fronts
     // add new store front
-    storeFront[newIndex] = StoreExtractor.StoreFront(newIndex, name, msg.sender);
+    storeFront[newIndex] = StoreExtractor.StoreFront(newIndex, true, name, msg.sender);
     // add store front to owner's list
     oMap[msg.sender].push(newIndex);
     // emit success event
@@ -76,7 +82,7 @@ contract StoreManager is EmitsEvent {
     // create unique ID to use
     newIndex = prodCount;
     // register product's details
-    product[newIndex] = StoreExtractor.Product(newIndex, _price, _qty, _name, _imageId);
+    product[newIndex] = StoreExtractor.Product(newIndex, _price, _qty, true, _name, _imageId, msg.sender);
     // add product to store front's list of products
     storeFrontProducts[_sFID].push(newIndex);
     // emit success event
@@ -87,13 +93,38 @@ contract StoreManager is EmitsEvent {
     return newIndex;
   }
 
+   /**
+    * @dev Mark a product as (de)activated.
+    */
+   function productUpdater(uint _prodId, uint _price, uint _qty) public ownsProduct(_prodId)
+   {
+     product[_prodId].price = _price;
+     product[_prodId].qty = _qty;
+   }
+
+   /**
+    * @dev Mark a product as (de)activated.
+    */
+   function productActivator(uint _prodId, bool status) public ownsProduct(_prodId)
+   {
+     product[_prodId].active = status;
+   }
+
+   /**
+    * @dev Mark a store front as (de)activated.
+    */
+   function storeFrontActivator(uint _sFID, bool status) public ownsStore(_sFID)
+   {
+     storeFront[_sFID].active = status;
+   }
+
   /**
    * @dev Get store fronts for a shop owner
    * todo:: see todo at contract's head
    * @return sFID[], name[], prodQty[]
    */
   function getStoreFronts(address _storeOwner) public view 
-        returns (uint[] memory, bytes32[] memory, uint[] memory)
+        returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
     // return store owner's store fronts data using extractor library
     return oMap[_storeOwner].extractStoreFronts(storeFront, storeFrontProducts); 
@@ -104,7 +135,7 @@ contract StoreManager is EmitsEvent {
    * @return sFID[], name[], prodQty[]
    */
   function getAllStoreFronts() public view 
-        returns (uint[] memory, bytes32[] memory, uint[] memory)
+        returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
     // return store fronts data using extractor library
     return sFIDs.extractStoreFronts(storeFront, storeFrontProducts);    
@@ -115,18 +146,20 @@ contract StoreManager is EmitsEvent {
    * @return sFID[], name[], prodQty[]
    */
    function getStoreFrontDetails(uint _sFID) public view
-         returns (string memory name, uint prodQty)
+         returns (string memory name, bool active, uint prodQty)
    {
      name = storeFront[_sFID].name;
+     active = storeFront[_sFID].active;
      prodQty = storeFrontProducts[_sFID].length;
-     return (name, prodQty);
+     return (name, active, prodQty);
    }
 
   /**
    * @dev Get the products in a store front
    */
   function getStoreFrontProducts(uint _sFID) public view
-        returns (uint[] memory, uint[] memory, uint[] memory, bytes32[] memory, bytes32[] memory)
+        returns (uint[] memory, uint[] memory, uint[] memory, 
+        bool[] memory, bytes32[] memory, bytes32[] memory)
   {
     // return a tuple of arrays of product props
     return storeFrontProducts[_sFID].extractProducts(product);
@@ -136,13 +169,14 @@ contract StoreManager is EmitsEvent {
    * @dev Get store front details
    */
    function getProductDetails(uint _prodId) public view
-         returns (uint price, uint qty, string memory name, string memory imageId)
+         returns (uint price, uint qty, bool active, string memory name, string memory imageId)
    {
      price = product[_prodId].price;
      qty = product[_prodId].qty;
+     active = product[_prodId].active;
      name = product[_prodId].name;
      imageId = product[_prodId].imageId;
-     return (price, qty, name, imageId);
+     return (price, qty, active, name, imageId);
    }
   
 }
