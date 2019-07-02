@@ -14,7 +14,9 @@ import '../event/EmitsEvent.sol';
  * todo:: manage the total number of users we can create to avoid a DoS exploitation where 
  * so many accounts get created and the loops to fetch makes us always run out of gas.
  */
-contract UserProfileManager is UserIdentity, EmitsEvent {
+contract UserProfileManager is EmitsEvent {
+  // allow identification of user
+  UserIdentity ui;
 
   enum UserType { Owner, Admin, ShopOwner }
 
@@ -28,19 +30,41 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
 
   mapping(address => Profile) profile;
 
+  modifier isOwner {
+      // require that the caller is the dApp owner
+      require(ui.fnIsOwner(msg.sender), "Only the dApp owner can perform this action."); _;
+  }
+
+  modifier isAdmin {
+    // require that the caller is an admin
+    require(ui.fnIsAdmin(msg.sender), "Only admins can do this"); _;
+  }
+
+  modifier isShopOwner {
+    // require that the caller is a shop owner
+    require(ui.fnIsShopOwner(msg.sender), "Only shop owners can do this"); _;
+  }
+
+  modifier isAdminOrShopOwner {
+    // require that the caller is an admin or the shop owner
+    require(ui.fnIsAdminOrShopOwner(msg.sender), "You must be an admin or shop owner to do this"); _;
+  }
+
   modifier ownsAdminProfile(address user) {
     // require that the profile is owned by the admin; proceed if app owner is the caller
-    require((msg.sender == profile[user].addr || msg.sender == owner),
+    require((msg.sender == profile[user].addr || ui.fnIsOwner(msg.sender)),
             "You don't own this profile and cannot update it."); _;
   }
 
   modifier ownsShopOwnerProfile(address user) {
     // require that the profile is owned by shop owner; proceed if admin is the caller
-    require(msg.sender == profile[user].addr || admin[msg.sender],
+    require(msg.sender == profile[user].addr || ui.fnIsAdmin(msg.sender),
             "You don't own this profile and cannot update it."); _;
   }
 
-  constructor() public {
+  constructor(address _ui) public {
+    // explicit conversion to allow the identification of users
+    ui = UserIdentity(_ui);
     // set my profile as the owner
     profile[msg.sender] = Profile(msg.sender, true, "Caleb", "Lucas", UserType.Owner);
   }
@@ -56,12 +80,11 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     // set address so that modififer can be aware
     // to grant specific access to user in the future
     if (uType == uint8(UserType.Admin)) {
-      setAdminAddress(user);
+      ui.setAdminAddress(msg.sender, user);
     }
     else if (uType == uint8(UserType.ShopOwner)) {
-      setShopOwnerAddress(user);
+      ui.setShopOwnerAddress(msg.sender, user);
     }
-
     // now add profile
     addProfile(user, uType, firstName, lastName);
   }
@@ -175,7 +198,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     // activate profile
     profile[user].active = true;
     // update restriction access controller
-    admin[user] = true;
+    ui.adminActivator(msg.sender, user, true);
   }
 
   /**
@@ -186,7 +209,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     // deactivate profile
     profile[user].active = false;
     // update restriction access controller
-    admin[user] = false;
+    ui.adminActivator(msg.sender, user, false);
   }
 
   /**
@@ -197,7 +220,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     // activate profile
     profile[user].active = true;
     // update restriction access controller
-    shop_owner[user] = false;
+    ui.shopOwnerActivator(msg.sender, user, true);
   }
   
   /**
@@ -208,7 +231,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     // deactivate profile
     profile[user].active = false;
     // update restriction access controller
-    shop_owner[user] = false;
+    ui.shopOwnerActivator(msg.sender, user, false);
   }
 
   /**
@@ -227,7 +250,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
   function getAdminsProfiles() public view isOwner returns(address[] memory, bool[] memory, 
           bytes32[] memory, bytes32[] memory, uint8[] memory)
   {
-    return getUsers(admins);
+    return getUsers(ui.getAdmins(msg.sender));
   }
 
   /**
@@ -236,7 +259,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
   function getShopOwnersProfiles() public view isAdmin returns(address[] memory, bool[] memory,
           bytes32[] memory, bytes32[] memory, uint8[] memory)
   {
-    return getUsers(shop_owners);
+    return getUsers(ui.getShopOwners(msg.sender));
   }
 
   /**

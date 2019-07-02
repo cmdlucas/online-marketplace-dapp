@@ -8,7 +8,9 @@ import { StoreExtractor } from '../_libs/StoreExtractor.sol';
  * @dev Manage store activities here
  * todo:: determine the maximum limit to fetch to prevent a DoS attack
  */
-contract StoreManager is UserIdentity, EmitsEvent {
+contract StoreManager is EmitsEvent {
+  // allow identification of user
+  UserIdentity ui;
   // allow extractor to work on arrays of ids
   using StoreExtractor for uint[];
   
@@ -29,11 +31,21 @@ contract StoreManager is UserIdentity, EmitsEvent {
 
   // map store owner to their store fronts 
   mapping(address => uint[]) oMap;
+
+  modifier isShopOwner {
+    // require that the caller is a shop owner
+    require(ui.fnIsShopOwner(msg.sender), "Only shop owners can do this"); _;
+  }
   
   // restrict access to owner of the store
   modifier ownsStore(uint _sFID) {
     require(storeFront[_sFID].storeOwner == msg.sender, 
         "Only the store owner can do this"); _;
+  }
+
+  constructor(UserIdentity _ui) public {
+    // allow the identification of users
+    ui = UserIdentity(_ui);
   }
 
   /**

@@ -14,7 +14,6 @@ contract('StoreManager', async accounts => {
             await userInstance.addNewProfile(
                 shopOwner, UserType.ShopOwner, "Lulu", "Hasna", { from: owner }
             );
-            console.log(userInstance);
         } catch (e) { console.log(e) }
         // get store contract instance
         storeInstance = await StoreManager.deployed();

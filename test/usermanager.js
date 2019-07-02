@@ -8,7 +8,7 @@ contract("UserProfileManager", async accounts => {
     const [owner, admin, adminTwo, shopOwner, shopOwnerTwo] = accounts;
 
     before(async () => {
-        instance = await UserProfileManager.new();
+        instance = await UserProfileManager.deployed();
     });
 
     it("should set app owner profile on deployment", async () => {
@@ -182,7 +182,7 @@ contract("UserProfileManager", async accounts => {
         assert.equal(profile.active, false, "The profile was not deactivated.");
     });
 
-    it("should activate admin", async () => {
+    it("should activate shop owner", async () => {
         try {
             // Deactive admin
             await instance.activateShopOwner( shopOwner, { from: admin } );

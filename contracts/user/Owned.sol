@@ -6,14 +6,11 @@ pragma solidity ^0.5.0;
  * @dev This contract provides owner power
  */
 contract Owned {
-  address internal owner;
-
-  modifier isOwner {
-      require(msg.sender == owner, "Only the owner can perform this action."); _;
-  }
+  address public owner;
+  string ownerFailureStatement = "Only the dApp owner can perform this action.";
 
   constructor() public {
-    // set contract deployer as owner
+    // set contract deployer as dApp owner
     owner = msg.sender;
   }
 }
