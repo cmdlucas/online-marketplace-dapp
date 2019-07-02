@@ -7,8 +7,8 @@ contract("UserProfileManager", async accounts => {
     const UserType = { Owner: 0, Admin: 1, ShopOwner: 2 }
     const [owner, admin, adminTwo, shopOwner, shopOwnerTwo] = accounts;
 
-    beforeEach(async () => {
-        instance = await UserProfileManager.deployed();
+    before(async () => {
+        instance = await UserProfileManager.new();
     });
 
     it("should set app owner profile on deployment", async () => {

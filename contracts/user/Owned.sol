@@ -1,7 +1,10 @@
 pragma solidity ^0.5.0;
 
-// This contract provides owner power
 
+/**
+ * @title Owned
+ * @dev This contract provides owner power
+ */
 contract Owned {
   address internal owner;
 

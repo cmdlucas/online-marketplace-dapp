@@ -5,7 +5,9 @@ class ShopOwnerHome extends Component
     render() {
         return (
             <>
-                <p> Shop Owner Home </p>
+                <p> 
+                    Shop Owner Home
+                </p>
             </>
         );
     }

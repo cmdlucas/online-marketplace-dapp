@@ -3,13 +3,16 @@ import { UserIdentity } from './UserIdentity.sol';
 import '../event/EmitsEvent.sol';
 
 /** 
- * @title Users Profile Manager
- * This contract provides us a way to store users profile
+ * @title UserProfileManager
+ * @dev This contract provides us a way to store users profile
  * and update them based on the permissions declared.
  * 1. dApp Owner (who is also an admin) can create and update admin and shop owner profile
  * 2. dApp Admin can create shop owner profile
  * 3. dApp Admin can update both self and shop owner profile
  * 4. dApp shopOwner can only update their own profile
+ * 
+ * todo:: manage the total number of users we can create to avoid a DoS exploitation where 
+ * so many accounts get created and the loops to fetch makes us always run out of gas.
  */
 contract UserProfileManager is UserIdentity, EmitsEvent {
 
@@ -26,13 +29,13 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
   mapping(address => Profile) profile;
 
   modifier ownsAdminProfile(address user) {
-    // require that the profile is owned by either the admin or app owner is the caller
+    // require that the profile is owned by the admin; proceed if app owner is the caller
     require((msg.sender == profile[user].addr || msg.sender == owner),
             "You don't own this profile and cannot update it."); _;
   }
 
   modifier ownsShopOwnerProfile(address user) {
-    // require that the profile is owned by either shop owner or admin is the caller
+    // require that the profile is owned by shop owner; proceed if admin is the caller
     require(msg.sender == profile[user].addr || admin[msg.sender],
             "You don't own this profile and cannot update it."); _;
   }
@@ -44,6 +47,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
 
   /**
    * @dev Set new user profile based on user type
+   * - Overwrites profile if address previously existed
    * @param uType can be any of 0, 1 or 2
    */
   function addNewProfile(address user, uint8 uType,
@@ -64,6 +68,7 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
 
   /**
    * @dev Set user profile based on user type
+   * - Overwrites profile if address previously existed
    * @param user - do not assume msg.sender as the user profile we're adding: this function is versatile
    * @param uType can be any of 0, 1 or 2
    */
@@ -217,7 +222,26 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
   }
 
   /**
-   * @dev Get all users profiles
+   * @dev Get all admins profiles
+   */
+  function getAdminsProfiles() public view isOwner returns(address[] memory, bool[] memory, 
+          bytes32[] memory, bytes32[] memory, uint8[] memory)
+  {
+    return getUsers(admins);
+  }
+
+  /**
+   * @dev Get all shopowners profiles
+   */
+  function getShopOwnersProfiles() public view isAdmin returns(address[] memory, bool[] memory,
+          bytes32[] memory, bytes32[] memory, uint8[] memory)
+  {
+    return getUsers(shop_owners);
+  }
+
+  /**
+   * @dev Extract all users profiles
+   * todo:: see todo at contract's head
    */
   function getUsers (address[] memory users) private view returns(address[] memory, bool[] memory,
           bytes32[] memory, bytes32[] memory, uint8[] memory)
@@ -227,15 +251,15 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     bytes32[] memory firstNames = new bytes32[] (users.length);
     bytes32[] memory lastNames = new bytes32[] (users.length);
     uint8[] memory userTypes = new uint8[] (users.length);
+    //Get users profile data
     for(uint i = 0; i < users.length; i++) {
-      // get profile of this particular admin
+      // get profile of this user
       Profile memory p = profile[users[i]];
       addrs[i] = p.addr;
       actives[i] = p.active;
       string memory fiName = p.firstName;
       string memory laName = p.lastName;
-      bytes32 fName;
-      bytes32 lName;
+      bytes32 fName; bytes32 lName;
       // convert string to bytes32
       assembly {
         fName := mload(add(fiName, 32))
@@ -248,23 +272,4 @@ contract UserProfileManager is UserIdentity, EmitsEvent {
     }
     return (addrs, actives, firstNames, lastNames, userTypes);
   }
-
-  /**
-   * @dev Get all admins profiles
-   */
-  function getAdminsProfiles() public view returns(address[] memory, bool[] memory, 
-          bytes32[] memory, bytes32[] memory, uint8[] memory)
-  {
-    return getUsers(admins);
-  }
-
-  /**
-   * @dev Get all shopowners profiles
-   */
-  function getShopOwnersProfiles() public view returns(address[] memory, bool[] memory,
-          bytes32[] memory, bytes32[] memory, uint8[] memory)
-  {
-    return getUsers(shop_owners);
-  }
-
 }

@@ -1,7 +1,9 @@
 pragma solidity ^0.5.0;
 
-
-// contract to hold all the events that we emit
+/**
+ * @title EmitsEvent
+ * @dev contract to hold all the events that we emit
+ */
 contract EmitsEvent {
   event ActionDone(int8 status, string statement);
 

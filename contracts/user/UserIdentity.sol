@@ -1,8 +1,11 @@
 pragma solidity ^0.5.0;
 import { Owned } from './Owned.sol';
 
-// This contract defines who a user is
-// It also provides permissions through its modifiers
+/** 
+ * @title UserIdentity
+ * @dev This contract defines who a user is,
+ * It also provides permissions through its modifiers
+ */
 contract UserIdentity is Owned {
   // Arrays to hold all user types;
   address[] public admins;
@@ -43,5 +46,4 @@ contract UserIdentity is Owned {
     shop_owner[_shop_owner] = true;
     shop_owners.push(_shop_owner);
   }
-
 }
