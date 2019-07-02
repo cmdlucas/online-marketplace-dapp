@@ -24,11 +24,12 @@ library StoreExtractor {
 
   /**
    * @dev extract store fronts from a list of store front IDs
+   * @return sFID[], name[], prodQty[]
    */
   function extractStoreFronts(uint[] storage sFIDs, 
         mapping(uint => StoreFront) storage storeFronts, 
         mapping(uint => uint[]) storage storeFrontProducts) internal view
-        returns (bytes32[] memory, uint[] memory)
+        returns (uint[] memory, bytes32[] memory, uint[] memory)
   {
     // extract all store front props;
     bytes32[] memory names = new bytes32[] (sFIDs.length);
@@ -48,7 +49,7 @@ library StoreExtractor {
       productsQtys[i] = storeFrontProducts[sFIDs[i]].length;
     }
 
-    return (names, productsQtys);
+    return (sFIDs, names, productsQtys);
   }
 
   function extractProducts(uint[] storage prods, 

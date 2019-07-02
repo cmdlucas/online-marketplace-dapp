@@ -15,10 +15,10 @@ contract StoreManager is EmitsEvent {
   using StoreExtractor for uint[];
   
   // track product count
-  uint prodCount;
+  uint public prodCount;
 
   // keep track of all the store front by their IDs
-  uint[] sFIDs;
+  uint[] public sFIDs;
 
   // map each storefront to it's content
   mapping(uint => StoreExtractor.StoreFront) storeFront;
@@ -90,9 +90,10 @@ contract StoreManager is EmitsEvent {
   /**
    * @dev Get store fronts for a shop owner
    * todo:: see todo at contract's head
+   * @return sFID[], name[], prodQty[]
    */
   function getStoreFronts(address _storeOwner) public view 
-        returns (bytes32[] memory, uint[] memory)
+        returns (uint[] memory, bytes32[] memory, uint[] memory)
   {
     // return store owner's store fronts data using extractor library
     return oMap[_storeOwner].extractStoreFronts(storeFront, storeFrontProducts); 
@@ -100,9 +101,10 @@ contract StoreManager is EmitsEvent {
 
   /**
    * @dev Get all store fronts
+   * @return sFID[], name[], prodQty[]
    */
   function getAllStoreFronts() public view 
-        returns (bytes32[] memory, uint[] memory)
+        returns (uint[] memory, bytes32[] memory, uint[] memory)
   {
     // return store fronts data using extractor library
     return sFIDs.extractStoreFronts(storeFront, storeFrontProducts);    
@@ -110,6 +112,7 @@ contract StoreManager is EmitsEvent {
 
   /**
    * @dev Get store front details
+   * @return sFID[], name[], prodQty[]
    */
    function getStoreFrontDetails(uint _sFID) public view
          returns (string memory name, uint prodQty)
