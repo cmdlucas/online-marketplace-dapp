@@ -13,7 +13,7 @@ class WorkModalMaster extends Component {
     }
 
     toggle() {
-        this.props.history.replace(this.props.prevUrl);
+        this.props.history.goBack();
     }
 
     render() {

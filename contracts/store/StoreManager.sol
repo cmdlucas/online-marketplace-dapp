@@ -66,6 +66,8 @@ contract StoreManager is EmitsEvent {
     storeFront[newIndex] = StoreExtractor.StoreFront(newIndex, true, name, msg.sender);
     // add store front to owner's list
     oMap[msg.sender].push(newIndex);
+    // track all sFIDs
+    sFIDs.push(newIndex);
     // emit success event
     emitActionSuccess("Store front created successfully.");
     // return the store front index
@@ -88,13 +90,13 @@ contract StoreManager is EmitsEvent {
     // emit success event
     emitActionSuccess("Product created successfully.");
     // increment product count
-    prodCount++;
+    prodCount = prodCount + 1;
     // return the store front index
     return newIndex;
   }
 
    /**
-    * @dev Mark a product as (de)activated.
+    * @dev Update a product's details.
     */
    function productUpdater(uint _prodId, uint _price, uint _qty) public ownsProduct(_prodId)
    {

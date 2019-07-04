@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import StoreFrontList from './StoreFrontList';
+import { homematcher, storefronturl, homeurl, createstorefronturl, storefrontmatcher } from '../../../utils/constants';
+import ProductList from './ProductList';
 
-class ShopOwnerHome extends Component
-{
+class ShopOwnerHome extends Component {
     render() {
         return (
             <>
-                <p> 
-                    Shop Owner Home
-                </p>
+                <p> Welcome {window.dapp.defaultProfile.firstName}, </p>
+                <Switch>
+                    {/** Home page */}
+                    <Route exact path={homematcher} component={StoreFrontList} />
+                    {/** Create Store Front */}
+                    <Route exact path={createstorefronturl} component={StoreFrontList} />
+                    {/** Redirect home if the  */}
+                    <Route exact path={storefronturl} render={() => <Redirect to={homeurl} />} />
+                    {/** Store front products page */}
+                    <Route path={storefrontmatcher} component={ProductList} />
+                    {/** Allow other products page */}
+                    <Route path={storefronturl} component={ProductList} />
+                </Switch>
             </>
         );
     }

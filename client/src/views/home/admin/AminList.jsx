@@ -32,7 +32,7 @@ class AdminList extends Component {
         // perform activation action admin in global state for faster UI response
         const admins = this.props.adminProfiles;
         admins[index].active = active;
-        this.props.setProfiles(admins);
+        this.props.setProfiles(admins || []);
         // deActivate admin in storage
         adminActivator(active, admins[index].addr).catch(e => {
             console.log(e);
