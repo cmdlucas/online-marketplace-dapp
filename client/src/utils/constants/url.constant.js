@@ -1,8 +1,18 @@
 // url list
-export const editprofileurl = "/profile-edit";
-export const createprofileurl = "/profile-create";
-
+export const homeurl = `/`;
+export const editprofileurl = `/profile-edit`;
+export const createprofileurl = `/profile-create`;
+export const storefronturi = `/storefront`;
+export const storefronturl = (sfid, name) => `${storefronturi}/${sfid}/${name}`;
+export const createstorefronturl = `${storefronturi}/create`;
+export const createproducturl = (sfid, name) => `${storefronturi}/${sfid}/${name}/product/add`;
+export const editproducturl = (sfid, name, pid) => `${storefronturi}/${sfid}/${name}/product/edit/${pid}`;
 
 // url matchers
-export const editprofilematcher = editprofileurl + "/:type/:id";
-export const createprofilematcher = createprofileurl + "/:type";
+export const homematcher = homeurl;
+export const editprofilematcher = `${editprofileurl}/:type/:id`;
+export const createprofilematcher = `${createprofileurl}/:type`;
+export const createstorefrontmatcher = createstorefronturl;
+export const storefrontmatcher = `${storefronturi}/:sfid/:name`;
+export const createproductmatcher = `${storefronturi}/:sfid/:name/product/add`;
+export const editproductmatcher = `${storefronturi}/:pid/:name/product/edit`;

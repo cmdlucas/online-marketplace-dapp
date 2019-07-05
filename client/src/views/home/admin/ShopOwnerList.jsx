@@ -21,7 +21,7 @@ class ShopOwnerList extends Component {
         profilesFetcher(UserType.ShopOwner).then(shopowners => {
             //extract shopowner profiles
             this.setOwnState({ loaded: true });
-            this.props.setProfiles(shopowners);
+            this.props.setProfiles(shopowners || []);
         }).catch(e => {
             alert(`Failed. Could not fetch shop owners. See console for error(s).`);
             console.log(e)

@@ -76,17 +76,16 @@ class EditProfile extends Component {
         if(profile.length > 0) {
             const { addr, firstName, lastName } = profile[id];
             return (
-                <WorkModalMaster prevUrl="/" 
-                    title={`Edit ${UserTitle[type]} Profile`} actionTitle="Proceed" actionDoer={() => this.editProfile(addr)}>    
-                    <Form>
+                <WorkModalMaster title={`Edit ${UserTitle[type]} Profile`} actionTitle="Proceed" actionDoer={() => this.editProfile(addr)}>    
+                    <Form onSubmit={e=>{e.preventDefault(); this.editProfile(addr); return false;}}>
                         <FormGroup>
                             <Label for="firstName">First Name</Label>
-                            <Input type="text" defaultValue={firstName} name="fname"
+                            <Input type="text" maxLength="32" defaultValue={firstName} name="fname"
                                 onChange={e => this.setFirstName(e.target.value)} id="firstName" placeholder="Enter first name" />
                         </FormGroup>
                         <FormGroup>
                             <Label for="lastName">Last Name </Label>
-                            <Input type="text" defaultValue={lastName} name="password"
+                            <Input type="text" maxLength="32" defaultValue={lastName} name="password"
                                 onChange={e => this.setLastName(e.target.value)} id="lastName" placeholder="Enter last name" />
                         </FormGroup>
                     </Form>

@@ -71,7 +71,7 @@ class AddProfile extends Component {
             }).then(() => {
                 window.location.assign("/");
             }).catch(e => {
-                alert(`Sorry. We couldn't update profile. See console for error(s)`);
+                alert(`Sorry. We couldn't create profile. See console for error(s)`);
                 console.log(e);
             })
         }
@@ -80,16 +80,16 @@ class AddProfile extends Component {
     render() {
         const { type } = this.props.match.params;
         return (
-            <WorkModalMaster prevUrl="/" title={`Create ${UserTitle[type]} Profile`} actionTitle="Proceed" actionDoer={() => this.addProfile()}>    
-                <Form>
+            <WorkModalMaster title={`Create ${UserTitle[type]} Profile`} actionTitle="Proceed" actionDoer={() => this.addProfile()}>    
+                <Form onSubmit={e=>{e.preventDefault(); this.addProfile(); return false;}}>
                     <FormGroup>
                         <Label for="firstName">First Name</Label>
-                        <Input type="text" name="fname" id="firstName"
+                        <Input type="text" maxLength="32" name="fname" id="firstName"
                             onChange={e => this.setFirstName(e.target.value)} placeholder="Enter first name" />
                     </FormGroup>
                     <FormGroup>
                         <Label for="lastName">Last Name </Label>
-                        <Input type="text" name="password" id="lastName" 
+                        <Input type="text" maxLength="32" name="password" id="lastName" 
                             onChange={e => this.setLastName(e.target.value)} placeholder="Enter last name" />
                     </FormGroup>
                     <FormGroup>

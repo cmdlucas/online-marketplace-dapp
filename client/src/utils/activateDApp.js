@@ -3,6 +3,7 @@ import TruffleContract from 'truffle-contract';
 import webThreeProvider from "./web3Provider";
 import getWeb3 from "./getWeb3";
 import UserProfileManagerArtifact from "../contracts/UserProfileManager.json";
+import StoreManagerArtifact from "../contracts/StoreManager.json";
 import userProfileSelector from './userProfileSelector';
 
 const loadDAPP = (resolve, reject) => {
@@ -19,9 +20,11 @@ const loadDAPP = (resolve, reject) => {
 
             // load contracts through their artifacts with truffle
             dapp.contracts.UserProfileManager = TruffleContract(UserProfileManagerArtifact);
+            dapp.contracts.StoreManager = TruffleContract(StoreManagerArtifact);
 
             // set providers on trufflised contracts
             dapp.contracts.UserProfileManager.setProvider(web3Provider);
+            dapp.contracts.StoreManager.setProvider(web3Provider);
 
             // make dapp globally available
             window.dapp = dapp;
