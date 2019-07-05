@@ -1,14 +1,14 @@
 import { hexToString } from "web3-utils";
 
-export const storeFrontsFetcher = sFID => {
+export const storeFrontsFetcher = addr => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
             const { contracts: { StoreManager } } = window.dapp;
             try {
                 // Get contract instance
                 const instance = await StoreManager.deployed();
-                // Get profiles according to type specified
-                const storeFronts = await instance.getStoreFronts.call(sFID);
+                // Get store fronts from shop owner specified
+                const storeFronts = await instance.getStoreFronts.call(addr);
                 // extract profiles
                 let allStoreFronts = [];
                 // get parameters from result
@@ -22,7 +22,6 @@ export const storeFrontsFetcher = sFID => {
                     };
                     allStoreFronts.push(storeFront);                    
                 }
-                console.log(storeFronts);
                 resolve(allStoreFronts);
             } catch (e) {
                 reject(e);

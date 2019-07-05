@@ -7,7 +7,8 @@ export const productsFetcher = sFID => {
             try {
                 // Get contract instance
                 const instance = await StoreManager.deployed();
-                // Get profiles according to type specified
+                // Get products from store front specified
+                const prodCount = await instance.prodCount.call();
                 const products = await instance.getStoreFrontProducts.call(sFID);
                 // extract profiles
                 let allProducts = [];
@@ -16,12 +17,15 @@ export const productsFetcher = sFID => {
                 for(let i = 0; i < n; i++) {
                     let product = { 
                         pid: parseInt(products[0][i]),
-                        productQty: parseInt(products[1][i]),
-                        active: products[2][i],
-                        name: hexToString(products[3][i])
+                        price: parseInt(products[1][i]),
+                        productQty: parseInt(products[2][i]),
+                        active: products[3][i],
+                        name: hexToString(products[4][i]),
+                        imageId: hexToString(products[5][i])
                     };
                     allProducts.push(product);                    
                 }
+                console.log(parseInt(prodCount))
                 resolve(allProducts);
             } catch (e) {
                 reject(e);

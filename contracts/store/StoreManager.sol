@@ -70,8 +70,6 @@ contract StoreManager is EmitsEvent {
     sFIDs.push(newIndex);
     // emit success event
     emitActionSuccess("Store front created successfully.");
-    // return the store front index
-    return newIndex;
   }
 
   /**
@@ -91,8 +89,6 @@ contract StoreManager is EmitsEvent {
     emitActionSuccess("Product created successfully.");
     // increment product count
     prodCount = prodCount + 1;
-    // return the store front index
-    return newIndex;
   }
 
    /**

@@ -5,11 +5,11 @@ import { editproducturl } from '../../../utils/constants';
 
 class EachProductCard extends Component {
     render() {
-        const { index, sfid, active, name, productQty, imageId, activate, deActivate } = this.props;
+        const { index, sfid, active, name, price, productQty, activate, deActivate } = this.props;
         return (
             <div className="col-md-4">
                 <div className="card position-rel">
-                    {/** Make product inaccessibe if not active */}
+                    {/** Make product inaccessible if not active */}
                     {!active && (
                         <div className="inactive-cover position-abs pt-5">
                             <div className="w-100 position-rel justify-content-center">
@@ -19,11 +19,11 @@ class EachProductCard extends Component {
                             </div>
                         </div>)
                     }
-                    <img class="card-img-top" src={imageId} alt={name} />
+                    <img className="card-img-top" src="https://via.placeholder.com/50" alt={name} />
                     <div className="card-header"> {name} </div>
                     <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Price: {name}</li>
-                        <li className="list-group-item">Quantuty: {productQty}</li>
+                        <li className="list-group-item">Price: ${price}</li>
+                        <li className="list-group-item">Quantity: {productQty}</li>
                     </ul>
                     <div className="card-body">
                         {/** Make profile manageable only when still active */}

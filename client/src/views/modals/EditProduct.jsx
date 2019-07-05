@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import WorkModalMaster from '../_layout/WorkModalMaster';
 import { Form, FormGroup, Label, Input,} from 'reactstrap';
-import { initialFormInputState, cleanWhiteSpaces } from '../../utils/constants/form.constants';
+import { initialFormInputState } from '../../utils/constants/form.constants';
 import { productUpdater } from '../../utils/dapp/productWorker';
 
 class EditProduct extends Component {
     state = {
         formdata: {
-            name: {...initialFormInputState},
+            price: {...initialFormInputState},
+            qty: {...initialFormInputState},
         }
     }
 
@@ -21,11 +22,20 @@ class EditProduct extends Component {
         this.setOwnState({ formdata: { ...this.state.formdata, ...formdata }, callback });
     }
 
-    setName(val) {
-        const value = cleanWhiteSpaces(val);
+    setPrice(val) {
+        const value = val >= 0 ? val : -1;
         this.setFormData({
-            name: {
-                value: value, faulty: false, error: ""
+            price: {
+                value: value, faulty: value === -1, error: ""
+            }
+        })
+    }
+
+    setQuantity(val) {
+        const value = val >= 0 ? val : -1;
+        this.setFormData({
+            qty: {
+                value: value, faulty: value === -1, error: ""
             }
         })
     }
@@ -42,9 +52,10 @@ class EditProduct extends Component {
 
     addProduct() {
         if(this.validated()) {
-            const { name } = this.state.formdata;
+            const { price, qty } = this.state.formdata;
+            const { pid } = this.props.match.params;
             productUpdater({
-                name: name.value
+                price: price.value, qty: qty.value, pid: pid
             }).then(() => {
                 window.location.assign("/");
             }).catch(e => {
@@ -59,9 +70,14 @@ class EditProduct extends Component {
             <WorkModalMaster title={`Edit Product`} actionTitle="Proceed" actionDoer={() => this.addProduct()}>    
                 <Form onSubmit={e=>{e.preventDefault(); this.addProduct(); return false;}}>
                     <FormGroup>
-                        <Label for="name">Name</Label>
-                        <Input type="text" maxLength="32" name="name" id="name"
-                            onChange={e => this.setName(e.target.value)} placeholder="Enter product's name" />
+                        <Label for="price">Price</Label>
+                        <Input type="number" min="0" name="price" id="price"
+                            onChange={e => this.setPrice(e.target.value)} placeholder="Enter product's price" />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="qty">Quantity</Label>
+                        <Input type="number" min="0" name="qty" id="qty"
+                            onChange={e => this.setQuantity(e.target.value)} placeholder="Enter product's quantity" />
                     </FormGroup>
                 </Form>
             </WorkModalMaster>

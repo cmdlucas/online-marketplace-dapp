@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import StoreFrontList from './StoreFrontList';
-import { homematcher, storefronturl, homeurl, createstorefronturl, storefrontmatcher } from '../../../utils/constants';
+import { homematcher, homeurl, createstorefronturl, storefrontmatcher, storefronturi } from '../../../utils/constants';
 import ProductList from './ProductList';
 
 class ShopOwnerHome extends Component {
@@ -15,11 +15,11 @@ class ShopOwnerHome extends Component {
                     {/** Create Store Front */}
                     <Route exact path={createstorefronturl} component={StoreFrontList} />
                     {/** Redirect home if the  */}
-                    <Route exact path={storefronturl} render={() => <Redirect to={homeurl} />} />
+                    <Route exact path={storefronturi} render={() => <Redirect to={homeurl} />} />
                     {/** Store front products page */}
                     <Route path={storefrontmatcher} component={ProductList} />
                     {/** Allow other products page */}
-                    <Route path={storefronturl} component={ProductList} />
+                    <Route path={storefronturi} component={ProductList} />
                 </Switch>
             </>
         );

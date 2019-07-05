@@ -20,7 +20,7 @@ class EachStoreFrontCard extends Component {
                         </div>)
                     }
                     <div className="card-header">
-                        <Link to={storefronturl + "/" + (index - 1) + "/" + name}>
+                        <Link to={storefronturl(index - 1, name)}>
                             {name}
                         </Link>
                     </div>

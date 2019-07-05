@@ -17,8 +17,8 @@ class ProductList extends Component
     }
 
     loadProducts() {
-        const { addr } = window.dapp.defaultProfile;
-        productsFetcher(addr).then(products => {
+        const { sfid } = this.props.match.params;
+        productsFetcher(sfid).then(products => {
             //set admin profiles globally
             this.setOwnState({ loaded: true });
             this.props.setProducts(products || []);
@@ -93,7 +93,8 @@ class ProductList extends Component
                                             return (
                                                 <EachProductCard key={index} index={index + 1}
                                                     sfid={sfid}
-                                                    firstName={product.name}
+                                                    price={product.price}
+                                                    name={product.name}
                                                     productQty={product.productQty}
                                                     active={product.active}
                                                     activate={() => this.activateProduct(index)}
