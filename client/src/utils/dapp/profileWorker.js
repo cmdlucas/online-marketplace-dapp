@@ -27,14 +27,13 @@ export const profilesFetcher = type => {
                 // get parameters from result
                 const n = profiles[0].length;
                 for(let i = 0; i < n; i++) {
-                    let profile = { 
+                    allProfiles.push({ 
                         addr: profiles[0][i],
                         active: profiles[1][i],
                         firstName: hexToString(profiles[2][i]),
                         lastName: hexToString(profiles[3][i]),
                         userType: parseInt(profiles[4][i])
-                    };
-                    allProfiles.push(profile);                    
+                    });                    
                 }
                 resolve(allProfiles);
             } catch (e) {

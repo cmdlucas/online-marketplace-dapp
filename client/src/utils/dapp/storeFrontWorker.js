@@ -14,13 +14,12 @@ export const storeFrontsFetcher = addr => {
                 // get parameters from result
                 const n = storeFronts[0].length;
                 for(let i = 0; i < n; i++) {
-                    let storeFront = { 
+                    allStoreFronts.push({ 
                         sFID: parseInt(storeFronts[0][i]),
                         productQty: parseInt(storeFronts[1][i]),
                         active: storeFronts[2][i],
                         name: hexToString(storeFronts[3][i])
-                    };
-                    allStoreFronts.push(storeFront);                    
+                    });                    
                 }
                 resolve(allStoreFronts);
             } catch (e) {
