@@ -7,6 +7,7 @@ export const storefronturl = (sfid, name) => `${storefronturi}/${sfid}/${name}`;
 export const createstorefronturl = `${storefronturi}/create`;
 export const createproducturl = (sfid, name) => `${storefronturi}/${sfid}/${name}/product/add`;
 export const editproducturl = (sfid, name, pid) => `${storefronturi}/${sfid}/${name}/product/edit/${pid}`;
+export const buyproducturl = (sfid, name, pid) => `${storefronturi}/${sfid}/${name}/product/buy/${pid}`;
 
 // url matchers
 export const homematcher = homeurl;

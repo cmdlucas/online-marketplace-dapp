@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createprofileurl } from '../../../utils/constants';
 
 class ShopOwnerList extends Component {
-    state = { loaded: false, shopowners: [] };
+    state = { loaded: false };
 
     setOwnState(state, callback = () => { }) {
         this.setState({ ...this.state, ...state }, callback);

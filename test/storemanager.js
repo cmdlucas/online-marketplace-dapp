@@ -21,15 +21,15 @@ contract('StoreManager', async accounts => {
     let storeInstance, storeFrontId, prodCount;
 
     it("should create a new store front", async () => {
-        let storeFront;
+        let storeFront, sI;
         try {
             // Create store front
-            await storeInstance.createStoreFront("Kitube Stores", { from: shopOwner });
+            sI = await storeInstance.createStoreFront("Kitube Stores", { from: shopOwner });
             // Get store front details
-            storeFront = await storeInstance.getStoreFronts.call(shopOwner);
-            storeFrontId = storeFront[0][0];
+            storeFront = await storeInstance.getStoreFronts.call(shopOwner, 0, 1);
+            storeFrontId = parseInt(storeFront[0][0]);
         } catch (e) { }
-        // the created store's name should be Kitube Stores
+        // the created store's id should be 0
         assert.equal(storeFrontId, 0, "The store front was not created.");
     });
 
@@ -39,18 +39,19 @@ contract('StoreManager', async accounts => {
             // Create store front
             await storeInstance.createStoreFront("Kitube Stores", { from: shopOwnerTwo });
             // Get store front details
-            storeFront = await storeInstance.getStoreFronts.call(shopOwner);
+            storeFront = await storeInstance.getStoreFronts.call(shopOwner, 0, 1);
             sFID = storeFront[0][1];
         } catch (e) { }
-        // the created store's name should be Kitube Stores
+        // the created store's id should be undefined
         assert.equal(sFID, undefined, "The store front was not created.");
     });
 
     it("should deactivate store front if store front owner calling", async () => {
+        let storeFront;
         try {
             // Update store front
             await storeInstance.storeFrontActivator(storeFrontId, false, { from: shopOwner });
-            // check for store front details
+            // Check for store front details
             storeFront = await storeInstance.getStoreFrontDetails.call(storeFrontId);
         } catch (e) { }
         // the store front's details should have been updated by now
@@ -61,6 +62,8 @@ contract('StoreManager', async accounts => {
         try {
             // Update store front
             await storeInstance.storeFrontActivator(storeFrontId, true, { from: shopOwnerTwo });
+        } catch (e) { }
+        try {
             // check for store front details
             storeFront = await storeInstance.getStoreFrontDetails.call(storeFrontId);
         } catch (e) { }
@@ -69,6 +72,7 @@ contract('StoreManager', async accounts => {
     });
 
     it("should activate store front if store front owner calling", async () => {
+        let storeFront;
         try {
             // Update store front
             await storeInstance.storeFrontActivator(storeFrontId, true, { from: shopOwner });
