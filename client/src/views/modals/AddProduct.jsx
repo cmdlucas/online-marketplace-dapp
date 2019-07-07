@@ -69,7 +69,9 @@ class AddProduct extends Component {
                 name: name.value, price: price.value,
                 qty: qty.value, sFID: params.sfid, imageId: "1.jpg"
             }).then(() => {
-                this.props.history.replace(storefronturl(params.sfid, params.name))
+                const url = storefronturl(params.sfid, params.name);
+                this.props.history.replace(url);
+                window.location.reload();
             }).catch(e => {
                 alert(`Sorry. We couldn't create product. See console for error(s)`);
                 console.log(e);

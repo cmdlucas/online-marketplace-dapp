@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
 import { connect } from 'react-redux';
 import { productsFetcher } from '../../../utils/dapp/productWorker';
 import ShopperProductCard from './ShopperProductCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setProducts } from '../../../model/redux/action/products';
-import { createproducturl } from '../../../utils/constants';
 
 class ShopperProductList extends Component
 {

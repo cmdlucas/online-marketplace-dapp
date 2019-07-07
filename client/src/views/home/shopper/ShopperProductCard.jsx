@@ -22,7 +22,7 @@ class EachProductCard extends Component {
                             <div className="p-2">
                                 <Link to={buyproducturl(sfid, name, pid)}>
                                     <button className="btn btn-primary">
-                                        <FontAwesomeIcon icon="search" />
+                                        <FontAwesomeIcon icon="cart-arrow-down" />
                                         {' '}
                                         <span>Buy</span>
                                     </button>
