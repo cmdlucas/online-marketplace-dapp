@@ -10,7 +10,7 @@ class EachProductCard extends Component {
             <div className="col-md-4">
                 <div className="card position-rel">
                     {/** Make product inaccessible if not active */}
-                    <img className="card-img-top" src="https://via.placeholder.com/50" alt={name} />
+                    <img className="card-img-top" src="https://via.placeholder.com/50" alt={`Loading ${name}...`} />
                     <div className="card-header"> {name} </div>
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item">Price: ${price}</li>

@@ -16,4 +16,5 @@ export const createprofilematcher = `${createprofileurl}/:type`;
 export const createstorefrontmatcher = createstorefronturl;
 export const storefrontmatcher = `${storefronturi}/:sfid/:name`;
 export const createproductmatcher = `${storefronturi}/:sfid/:name/product/add`;
-export const editproductmatcher = `${storefronturi}/:pid/:name/product/edit`;
+export const editproductmatcher = `${storefronturi}/:sfid/:name/product/edit/:pid`;
+export const buyproductmatcher = `${storefronturi}/:sfid/:name/product/buy/:pid`;

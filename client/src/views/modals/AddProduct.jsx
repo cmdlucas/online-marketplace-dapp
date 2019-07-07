@@ -95,7 +95,7 @@ class AddProduct extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Label for="qty">Quantity</Label>
-                        <Input type="number" min="0" name="qty" id="qty"
+                        <Input type="number" min="1" name="qty" id="qty"
                             onChange={e => this.setQuantity(e.target.value)} placeholder="Enter product's quantity" />
                     </FormGroup>
                 </Form>

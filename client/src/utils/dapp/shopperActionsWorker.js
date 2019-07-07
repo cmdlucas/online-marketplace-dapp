@@ -62,3 +62,36 @@ export const productsFetcher = sFID => {
         reject(`dApp not provisioned.`);
     })
 }
+
+export const productsPurchaser = pid => {
+    return new Promise(async (resolve, reject) => {
+        if(window.dapp) {
+            // const { contracts: { StoreManager } } = window.dapp;
+            try {
+                // Get contract instance
+                // const instance = await StoreManager.deployed();
+                // // Get products from store front specified
+                // const products = await instance.getStoreFrontProducts.call(sFID, 0, 25);
+                // // extract profiles
+                // let allProducts = [];
+                // // get parameters from result
+                // const n = products[0].length;
+                // for(let i = 0; i < n; i++) {
+                //     allProducts.push({ 
+                //         pid: parseInt(products[0][i]),
+                //         price: parseInt(products[1][i]),
+                //         productQty: parseInt(products[2][i]),
+                //         active: products[3][i],
+                //         name: hexToString(products[4][i]),
+                //         imageId: "1.jpg"
+                //     });                    
+                // }
+                // resolve(allProducts);
+                resolve([]);
+            } catch (e) {
+                reject(e);
+            }
+        }
+        reject(`dApp not provisioned.`);
+    })
+}

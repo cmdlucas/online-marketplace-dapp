@@ -54,6 +54,7 @@ class ShopperProductList extends Component
                                         products.map((product, index) => {
                                             return (
                                                 <ShopperProductCard key={index} index={index + 1}
+                                                    pid={product.pid}
                                                     sfid={sfid}
                                                     price={product.price}
                                                     name={product.name}
