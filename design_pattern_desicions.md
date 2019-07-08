@@ -12,7 +12,7 @@ To implement access restriction, we have made use of modifiers in `UserProfileMa
 
 #### Situation 2:
 
-To implement access restriction, we have use of modifiers in `PurchaseManager.sol`, so that
+To implement access restriction, we have made use of modifiers in `PurchaseManager.sol`, so that
 
   - Only the shop owners can withdraw funds
 
