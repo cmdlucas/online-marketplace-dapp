@@ -10,7 +10,12 @@ import { StoreExtractor } from '../_libs/StoreExtractor.sol';
  */
 contract PurchaseManager is EmitsEvent
 {
+  // allow contract to be deactivated when necessary
+  bool private stopped = false;
+
+  // allow identification of user
   UserIdentity ui;
+  // allow store and product access
   StoreManager sm;
 
   uint ourFunds;
@@ -21,10 +26,21 @@ contract PurchaseManager is EmitsEvent
   // map store front id to funds collected
   mapping(uint => uint) storeFrontFunds;
 
+  modifier isOwner {
+    // require that the caller is a shop owner
+    require(ui.fnIsOwner(msg.sender), "Only app owner can do this"); _;
+  }
+
   modifier isShopOwner {
     // require that the caller is a shop owner
     require(ui.fnIsShopOwner(msg.sender), "Only shop owners can do this"); _;
   }
+  
+  // force execution to stop in emergency
+  modifier stopInEmergency { if (!stopped) _; }
+  
+  // only allow execution in emergency
+  modifier onlyInEmergency { if (stopped) _; }
 
   constructor(address _ui, address _sm) public 
   {
@@ -36,7 +52,7 @@ contract PurchaseManager is EmitsEvent
   /**
    * @dev allow shoppers to buy a product by paying ether
    */
-  function buyProduct(uint _pid, uint _qty, uint _sFID) public payable
+  function buyProduct(uint _pid, uint _qty, uint _sFID) public payable stopInEmergency
   {
     ( 
       , uint _price, uint prodQty, bool prodActive, , , address productOwner
@@ -111,10 +127,21 @@ contract PurchaseManager is EmitsEvent
     userFunds[msg.sender] = currBal - sum;
   }
 
+  /**
+   * @dev allow store owner check their balance
+   */
   function checkStoreOwnerBalance() public view isShopOwner
         returns (uint bal)
   {
     bal = userFunds[msg.sender];
+  }
+
+  /**
+   * @dev Force contract to stop on emergency
+   */
+  function toggleContractActive() public isOwner {
+    // toggle contract active state
+    stopped = !stopped;
   }
 
 }

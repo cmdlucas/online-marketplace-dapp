@@ -18,3 +18,7 @@ To implement access restriction, we have use of modifiers in `PurchaseManager.so
 
 ## Withdrawal Pattern
 This is highly common when our contract tries to send funds to an address that requests a withdraw. The address could very well be another contract address which, when called, creates another withdraw order. This will invariably swipe all the funds out of the account in no time. 
+
+
+## Circuit Breaker
+It can happen that bugs are discovered after our contract has been deployed. To emit any continous risk, should a buggy contract be discovered, the root admin of this app has the power to stop functions in any sole-standing contract that was deployed. The admin can toggle `toggleContractActive()` which helps trigger modifiers that effectuate the contract's updated stance.

@@ -6,7 +6,11 @@ import { Owned } from './Owned.sol';
  * @dev This contract defines who a user is,
  * It also provides permissions through its modifiers
  */
-contract UserIdentity is Owned {
+contract UserIdentity is Owned 
+{
+  // allow contract to be deactivated when necessary
+  bool private stopped = false;
+
   // Arrays to hold all user types;
   address[] public admins;
   address[] public shop_owners;
@@ -15,6 +19,11 @@ contract UserIdentity is Owned {
   // mainly because of gas costs when we loop
   mapping(address => bool) public admin;
   mapping(address => bool) public shop_owner;
+
+  modifier isOwner {
+    // require that the caller is a shop owner
+    require(msg.sender == owner, "Only app owner can do this"); _;
+  }
 
   modifier isAdmin (address _sender) {
     // require that the caller is an admin
@@ -31,6 +40,12 @@ contract UserIdentity is Owned {
     require(admin[msg.sender] || shop_owner[msg.sender],
     "You must be an admin or shop owner to do this"); _;
   }
+  
+  // force execution to stop in emergency
+  modifier stopInEmergency { if (!stopped) _; }
+  
+  // only allow execution in emergency
+  modifier onlyInEmergency { if (stopped) _; }
 
   constructor() public 
   {
@@ -73,7 +88,7 @@ contract UserIdentity is Owned {
   /**
    * @dev set admin address
    */
-  function setAdminAddress(address _sender, address _admin) public
+  function setAdminAddress(address _sender, address _admin) public stopInEmergency
   {
     require(owner == _sender, ownerFailureStatement);
     admin[_admin] = true;
@@ -83,7 +98,7 @@ contract UserIdentity is Owned {
   /**
    * @dev set shop owner address
    */
-  function setShopOwnerAddress(address _sender ,address _shop_owner) public isAdmin(_sender)
+  function setShopOwnerAddress(address _sender ,address _shop_owner) public stopInEmergency isAdmin(_sender)
   {
     shop_owner[_shop_owner] = true;
     shop_owners.push(_shop_owner);
@@ -92,7 +107,7 @@ contract UserIdentity is Owned {
   /**
    * @dev activate/deactivate admin
    */
-  function adminActivator(address _sender, address _admin, bool state) public
+  function adminActivator(address _sender, address _admin, bool state) stopInEmergency public
   {
     require(owner == _sender, ownerFailureStatement);
     admin[_admin] = state;
@@ -101,7 +116,7 @@ contract UserIdentity is Owned {
   /**
    * @dev activate/deactivate shop owner
    */
-  function shopOwnerActivator(address _sender, address _admin, bool state) public isAdmin(_sender)
+  function shopOwnerActivator(address _sender, address _admin, bool state) public stopInEmergency isAdmin(_sender)
   {
     shop_owner[_admin] = state;
   }
@@ -121,6 +136,13 @@ contract UserIdentity is Owned {
   function getShopOwners(address _sender) public view isAdmin(_sender) returns (address[] memory) 
   {
     return shop_owners;
+  }   
+
+  /**
+   * @dev Force contract to stop on emergency
+   */
+  function toggleContractActive() public isOwner {
+    // toggle contract active state
+    stopped = !stopped;
   }
-   
 }

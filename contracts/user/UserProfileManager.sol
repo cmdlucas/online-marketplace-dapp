@@ -14,7 +14,11 @@ import '../event/EmitsEvent.sol';
  * todo:: manage the total number of users we can create to avoid a DoS exploitation where 
  * so many accounts get created and the loops to fetch makes us always run out of gas.
  */
-contract UserProfileManager is EmitsEvent {
+contract UserProfileManager is EmitsEvent 
+{
+  // allow contract to be deactivated when necessary
+  bool private stopped = false;
+
   // allow identification of user
   UserIdentity ui;
 
@@ -61,6 +65,12 @@ contract UserProfileManager is EmitsEvent {
     require(msg.sender == profile[user].addr || ui.fnIsAdmin(msg.sender),
             "You don't own this profile and cannot update it."); _;
   }
+  
+  // force execution to stop in emergency
+  modifier stopInEmergency { if (!stopped) _; }
+  
+  // only allow execution in emergency
+  modifier onlyInEmergency { if (stopped) _; }
 
   constructor(address _ui) public {
     // explicit conversion to allow the identification of users
@@ -75,7 +85,7 @@ contract UserProfileManager is EmitsEvent {
    * @param uType can be any of 0, 1 or 2
    */
   function addNewProfile(address user, uint8 uType,
-                string memory firstName, string memory lastName) public
+                string memory firstName, string memory lastName) public stopInEmergency
   {
     // set address so that modififer can be aware
     // to grant specific access to user in the future
@@ -96,7 +106,7 @@ contract UserProfileManager is EmitsEvent {
    * @param uType can be any of 0, 1 or 2
    */
   function addProfile(address user, uint8 uType,
-                string memory firstName, string memory lastName) public
+                string memory firstName, string memory lastName) public stopInEmergency
   {
     // set admin profile
     if (uType == uint8(UserType.Admin)) {
@@ -114,7 +124,7 @@ contract UserProfileManager is EmitsEvent {
    * @dev Create admin profile
    */
   function addAdminProfile(address user, string memory firstName,
-                            string memory lastName) private isOwner
+                            string memory lastName) private isOwner 
   {
     // set profile
     profile[user] = Profile(user, true, firstName, lastName, UserType.Admin);
@@ -124,7 +134,7 @@ contract UserProfileManager is EmitsEvent {
    * @dev Create shop owner profile
    */
   function addShopOwnerProfile(address user, string memory firstName,
-                            string memory lastName) private isAdmin
+                            string memory lastName) private isAdmin stopInEmergency
   {
     // set profile
     profile[user] = Profile(user, true, firstName, lastName, UserType.ShopOwner);
@@ -138,7 +148,7 @@ contract UserProfileManager is EmitsEvent {
    * @param uType can be any of 0, 1 or 2
    */
   function updateProfile(address user, uint8 uType,
-                string memory firstName, string memory lastName) public
+                string memory firstName, string memory lastName) public stopInEmergency
   {
     // set owner profile
     if(uType == uint8(UserType.Owner)) {
@@ -170,7 +180,7 @@ contract UserProfileManager is EmitsEvent {
    * @dev Set admin profile
    */
   function setAdminProfile(address user, string memory firstName,
-                            string memory lastName) private ownsAdminProfile(user)
+                            string memory lastName) private stopInEmergency ownsAdminProfile(user)
   {
     // set profile
     profile[user] = Profile(user, true, firstName, lastName, UserType.Admin);
@@ -182,7 +192,8 @@ contract UserProfileManager is EmitsEvent {
    * @dev Set shop owner profile
    */
   function setShopOwnerProfile(address user, string memory firstName,
-                            string memory lastName) private ownsShopOwnerProfile(user)
+                            string memory lastName) private 
+                      stopInEmergency ownsShopOwnerProfile(user)
   {
     // set profile
     profile[user] = Profile(user, true, firstName, lastName, UserType.ShopOwner);
@@ -193,7 +204,7 @@ contract UserProfileManager is EmitsEvent {
   /**
    * @dev Activate admin account
    */
-  function activateAdmin(address user) public isOwner
+  function activateAdmin(address user) public isOwner stopInEmergency
   {
     // activate profile
     profile[user].active = true;
@@ -204,7 +215,7 @@ contract UserProfileManager is EmitsEvent {
   /**
    * @dev Deactivate admin account
    */
-  function deActivateAdmin(address user) public isOwner
+  function deActivateAdmin(address user) public isOwner stopInEmergency
   {
     // deactivate profile
     profile[user].active = false;
@@ -215,7 +226,7 @@ contract UserProfileManager is EmitsEvent {
   /**
    * @dev Activate shop owner account
    */
-  function activateShopOwner(address user) public isAdmin
+  function activateShopOwner(address user) public isAdmin stopInEmergency
   {
     // activate profile
     profile[user].active = true;
@@ -226,7 +237,7 @@ contract UserProfileManager is EmitsEvent {
   /**
    * @dev Deactivate shop owner account
    */
-  function deActivateShopOwner(address user) public isAdmin
+  function deActivateShopOwner(address user) public isAdmin stopInEmergency
   {
     // deactivate profile
     profile[user].active = false;
@@ -294,5 +305,13 @@ contract UserProfileManager is EmitsEvent {
       userTypes[i] = uint8(p.userType);
     }
     return (addrs, actives, firstNames, lastNames, userTypes);
+  }
+
+  /**
+   * @dev Force contract to stop on emergency
+   */
+  function toggleContractActive() public isOwner {
+    // toggle contract active state
+    stopped = !stopped;
   }
 }

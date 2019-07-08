@@ -9,6 +9,9 @@ import { StoreExtractor } from '../_libs/StoreExtractor.sol';
  */
 contract StoreManager is EmitsEvent 
 {
+  // allow contract to be deactivated when necessary
+  bool private stopped = false;
+  
   // allow identification of user
   UserIdentity ui;
 
@@ -36,11 +39,16 @@ contract StoreManager is EmitsEvent
   // map store owner to their store fronts 
   mapping(address => uint[]) public oMap;
 
+  modifier isOwner {
+    // require that the caller is a shop owner
+    require(ui.fnIsOwner(msg.sender), "Only app owner can do this"); _;
+  }
+
   modifier isShopOwner {
     // require that the caller is a shop owner
     require(ui.fnIsShopOwner(msg.sender), "Only shop owners can do this"); _;
   }
-  
+
   // restrict access to product
   modifier ownsProduct(address _sender, uint _prodId) {
     require(product[_prodId].productOwner == msg.sender || product[_prodId].productOwner == _sender, 
@@ -52,6 +60,12 @@ contract StoreManager is EmitsEvent
     require(storeFront[_sFID].storeOwner == msg.sender, 
         "Only the store owner can do this"); _;
   }
+  
+  // force execution to stop in emergency
+  modifier stopInEmergency { if (!stopped) _; }
+  
+  // only allow execution in emergency
+  modifier onlyInEmergency { if (stopped) _; }
 
   constructor(UserIdentity _ui) public {
     // allow the identification of users
@@ -61,7 +75,7 @@ contract StoreManager is EmitsEvent
   /**
    * @dev Create a new store front
    */
-  function createStoreFront(string memory name) public isShopOwner returns (uint newIndex)
+  function createStoreFront(string memory name) public isShopOwner stopInEmergency returns (uint newIndex)
   {
     // create unique ID to use
     newIndex = sFIDs.length;
@@ -79,7 +93,7 @@ contract StoreManager is EmitsEvent
    * @dev Add a new product to a store front
    */
   function addProduct(uint _sFID, uint _price, uint _qty, 
-          string memory _name, string memory _imageId) public ownsStore(_sFID)
+          string memory _name, string memory _imageId) public stopInEmergency ownsStore(_sFID)
           returns (uint newIndex)
   {
     require(_price > 0, "Price must be more than zero");
@@ -101,7 +115,7 @@ contract StoreManager is EmitsEvent
     * @param _sender - allows versatility with function
     */
    function productUpdater(address _sender, uint _prodId, uint _price, uint _qty) public 
-        ownsProduct(_sender, _prodId)
+        stopInEmergency ownsProduct(_sender, _prodId)
    {
      product[_prodId].price = _price;
      product[_prodId].qty = _qty;
@@ -110,11 +124,12 @@ contract StoreManager is EmitsEvent
    /**
     * @dev Mark a product as (de)activated.
     */
-   function productActivator(uint _sfid, uint _prodId, bool status) public ownsProduct(msg.sender, _prodId)
+   function productActivator(uint _sfid, uint _prodId, bool status) public 
+        stopInEmergency ownsProduct(msg.sender, _prodId) 
    {
      // update product status
      product[_prodId].active = status;
-     // update store product's count
+     // update store products' count
     storeFrontProductsActive[_sfid] = status 
           ? (
               storeFrontProductsActive[_sfid] < storeFrontProducts[_sfid].length 
@@ -139,7 +154,7 @@ contract StoreManager is EmitsEvent
   function getStoreFronts(address _storeOwner, uint from, uint to) public view 
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
-    // cover range
+    // cover a specific range per request
     require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return store owner's store fronts data using extractor library
     return oMap[_storeOwner].extractStoreFronts(from, to, storeFront, storeFrontProductsActive);
@@ -199,15 +214,23 @@ contract StoreManager is EmitsEvent
   /**
    * @dev Get store front details
    */
-   function getProductDetails(uint _prodId) public view
+  function getProductDetails(uint _prodId) public view
          returns (uint price, uint qty, bool active, string memory name, string memory imageId)
-   {
-     price = product[_prodId].price;
-     qty = product[_prodId].qty;
-     active = product[_prodId].active;
-     name = product[_prodId].name;
-     imageId = product[_prodId].imageId;
-     return (price, qty, active, name, imageId);
-   }
+  {
+    price = product[_prodId].price;
+    qty = product[_prodId].qty;
+    active = product[_prodId].active;
+    name = product[_prodId].name;
+    imageId = product[_prodId].imageId;
+    return (price, qty, active, name, imageId);
+  }
+
+  /**
+   * @dev Force contract to stop on emergency
+   */
+  function toggleContractActive() public isOwner {
+    // toggle contract active state
+    stopped = !stopped;
+  }
   
 }
