@@ -33,14 +33,14 @@
     "absolutePath": "/home/cmdlucas/blockchain-dev/consensys-project/online-marketplace-dapp/contracts/user/Owned.sol",
     "exportedSymbols": {
       "Owned": [
-        1262
+        1306
       ]
     },
-    "id": 1263,
+    "id": 1307,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1247,
+        "id": 1291,
         "literals": [
           "solidity",
           "^",
@@ -56,19 +56,19 @@
         "contractKind": "contract",
         "documentation": "@title Owned\n@dev This contract provides owner power",
         "fullyImplemented": true,
-        "id": 1262,
+        "id": 1306,
         "linearizedBaseContracts": [
-          1262
+          1306
         ],
         "name": "Owned",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1249,
+            "id": 1293,
             "name": "owner",
             "nodeType": "VariableDeclaration",
-            "scope": 1262,
+            "scope": 1306,
             "src": "112:20:5",
             "stateVariable": true,
             "storageLocation": "default",
@@ -77,7 +77,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 1248,
+              "id": 1292,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "112:7:5",
@@ -92,10 +92,10 @@
           },
           {
             "constant": false,
-            "id": 1252,
+            "id": 1296,
             "name": "ownerFailureStatement",
             "nodeType": "VariableDeclaration",
-            "scope": 1262,
+            "scope": 1306,
             "src": "136:77:5",
             "stateVariable": true,
             "storageLocation": "default",
@@ -104,7 +104,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 1250,
+              "id": 1294,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "136:6:5",
@@ -116,7 +116,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "4f6e6c79207468652064417070206f776e65722063616e20706572666f726d207468697320616374696f6e2e",
-              "id": 1251,
+              "id": 1295,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -135,25 +135,25 @@
           },
           {
             "body": {
-              "id": 1260,
+              "id": 1304,
               "nodeType": "Block",
               "src": "239:72:5",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1258,
+                    "id": 1302,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1255,
+                      "id": 1299,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1249,
+                      "referencedDeclaration": 1293,
                       "src": "288:5:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -166,18 +166,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1256,
+                        "id": 1300,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2327,
+                        "referencedDeclaration": 2371,
                         "src": "296:3:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 1257,
+                      "id": 1301,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -197,39 +197,39 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1259,
+                  "id": 1303,
                   "nodeType": "ExpressionStatement",
                   "src": "288:18:5"
                 }
               ]
             },
             "documentation": null,
-            "id": 1261,
+            "id": 1305,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1253,
+              "id": 1297,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "229:2:5"
             },
             "returnParameters": {
-              "id": 1254,
+              "id": 1298,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "239:0:5"
             },
-            "scope": 1262,
+            "scope": 1306,
             "src": "218:93:5",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1263,
+        "scope": 1307,
         "src": "93:220:5"
       }
     ],
@@ -239,14 +239,14 @@
     "absolutePath": "/home/cmdlucas/blockchain-dev/consensys-project/online-marketplace-dapp/contracts/user/Owned.sol",
     "exportedSymbols": {
       "Owned": [
-        1262
+        1306
       ]
     },
-    "id": 1263,
+    "id": 1307,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1247,
+        "id": 1291,
         "literals": [
           "solidity",
           "^",
@@ -262,19 +262,19 @@
         "contractKind": "contract",
         "documentation": "@title Owned\n@dev This contract provides owner power",
         "fullyImplemented": true,
-        "id": 1262,
+        "id": 1306,
         "linearizedBaseContracts": [
-          1262
+          1306
         ],
         "name": "Owned",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1249,
+            "id": 1293,
             "name": "owner",
             "nodeType": "VariableDeclaration",
-            "scope": 1262,
+            "scope": 1306,
             "src": "112:20:5",
             "stateVariable": true,
             "storageLocation": "default",
@@ -283,7 +283,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 1248,
+              "id": 1292,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "112:7:5",
@@ -298,10 +298,10 @@
           },
           {
             "constant": false,
-            "id": 1252,
+            "id": 1296,
             "name": "ownerFailureStatement",
             "nodeType": "VariableDeclaration",
-            "scope": 1262,
+            "scope": 1306,
             "src": "136:77:5",
             "stateVariable": true,
             "storageLocation": "default",
@@ -310,7 +310,7 @@
               "typeString": "string"
             },
             "typeName": {
-              "id": 1250,
+              "id": 1294,
               "name": "string",
               "nodeType": "ElementaryTypeName",
               "src": "136:6:5",
@@ -322,7 +322,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "4f6e6c79207468652064417070206f776e65722063616e20706572666f726d207468697320616374696f6e2e",
-              "id": 1251,
+              "id": 1295,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -341,25 +341,25 @@
           },
           {
             "body": {
-              "id": 1260,
+              "id": 1304,
               "nodeType": "Block",
               "src": "239:72:5",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1258,
+                    "id": 1302,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1255,
+                      "id": 1299,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1249,
+                      "referencedDeclaration": 1293,
                       "src": "288:5:5",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -372,18 +372,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1256,
+                        "id": 1300,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2327,
+                        "referencedDeclaration": 2371,
                         "src": "296:3:5",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 1257,
+                      "id": 1301,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -403,39 +403,39 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 1259,
+                  "id": 1303,
                   "nodeType": "ExpressionStatement",
                   "src": "288:18:5"
                 }
               ]
             },
             "documentation": null,
-            "id": 1261,
+            "id": 1305,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1253,
+              "id": 1297,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "229:2:5"
             },
             "returnParameters": {
-              "id": 1254,
+              "id": 1298,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "239:0:5"
             },
-            "scope": 1262,
+            "scope": 1306,
             "src": "218:93:5",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1263,
+        "scope": 1307,
         "src": "93:220:5"
       }
     ],
@@ -447,7 +447,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T07:33:48.210Z",
+  "updatedAt": "2019-07-08T10:30:42.338Z",
   "devdoc": {
     "details": "This contract provides owner power",
     "methods": {},

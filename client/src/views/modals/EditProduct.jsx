@@ -5,6 +5,7 @@ import WorkModalMaster from '../_layout/WorkModalMaster';
 import { Form, FormGroup, Label, Input,} from 'reactstrap';
 import { initialFormInputState } from '../../utils/constants/form.constants';
 import { productUpdater } from '../../utils/dapp/productWorker';
+import { storefronturl } from '../../utils/constants';
 
 class EditProduct extends Component {
     state = {
@@ -53,11 +54,13 @@ class EditProduct extends Component {
     addProduct() {
         if(this.validated()) {
             const { price, qty } = this.state.formdata;
-            const { pid } = this.props.match.params;
+            const { pid, sfid, name } = this.props.match.params;
             productUpdater({
                 price: price.value, qty: qty.value, pid: pid
             }).then(() => {
-                window.location.assign("/");
+                const url = storefronturl(sfid, name);
+                this.props.history.replace(url);
+                window.location.reload();
             }).catch(e => {
                 alert(`Sorry. We couldn't edit product. See console for error(s)`);
                 console.log(e);

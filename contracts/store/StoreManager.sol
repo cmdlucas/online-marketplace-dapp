@@ -30,6 +30,9 @@ contract StoreManager is EmitsEvent
   // map store front to it's products (id)
   mapping(uint => uint[]) public storeFrontProducts;
 
+  // map store front to active products count
+  mapping(uint => uint) public storeFrontProductsActive;
+
   // map store owner to their store fronts 
   mapping(address => uint[]) public oMap;
 
@@ -86,6 +89,7 @@ contract StoreManager is EmitsEvent
     product[newIndex] = StoreExtractor.Product(newIndex, _price, _qty, true, _name, _imageId, msg.sender);
     // add product to store front's list of products
     storeFrontProducts[_sFID].push(newIndex);
+    storeFrontProductsActive[_sFID] = storeFrontProducts[_sFID].length;
     // emit success event
     emitActionSuccess("Product created successfully.");
     // increment product count
@@ -106,9 +110,18 @@ contract StoreManager is EmitsEvent
    /**
     * @dev Mark a product as (de)activated.
     */
-   function productActivator(uint _prodId, bool status) public ownsProduct(msg.sender, _prodId)
+   function productActivator(uint _sfid, uint _prodId, bool status) public ownsProduct(msg.sender, _prodId)
    {
+     // update product status
      product[_prodId].active = status;
+     // update store product's count
+    storeFrontProductsActive[_sfid] = status 
+          ? (
+              storeFrontProductsActive[_sfid] < storeFrontProducts[_sfid].length 
+              ? storeFrontProductsActive[_sfid] + 1  
+              : storeFrontProducts[_sfid].length
+            )
+          : storeFrontProducts[_sfid].length - 1;
    }
 
    /**
@@ -129,7 +142,7 @@ contract StoreManager is EmitsEvent
     // cover range
     require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return store owner's store fronts data using extractor library
-    return oMap[_storeOwner].extractStoreFronts(from, to, storeFront, storeFrontProducts);
+    return oMap[_storeOwner].extractStoreFronts(from, to, storeFront, storeFrontProductsActive);
   }
 
   /**
@@ -142,7 +155,7 @@ contract StoreManager is EmitsEvent
     // cover range
     require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return store fronts data using extractor library
-    return sFIDs.extractStoreFronts(from, to, storeFront, storeFrontProducts);
+    return sFIDs.extractStoreFronts(from, to, storeFront, storeFrontProductsActive);
   }
 
   /**
@@ -154,7 +167,7 @@ contract StoreManager is EmitsEvent
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
     // return store fronts data using extractor library
-    return sFIDs.extractStoreFronts(0, sFIDs.length, storeFront, storeFrontProducts);    
+    return sFIDs.extractStoreFronts(0, sFIDs.length, storeFront, storeFrontProductsActive);    
   }
 
   /**
@@ -166,7 +179,7 @@ contract StoreManager is EmitsEvent
   {
     name = storeFront[_sFID].name;
     active = storeFront[_sFID].active;
-    prodQty = storeFrontProducts[_sFID].length;
+    prodQty = storeFrontProductsActive[_sFID];
     return (name, active, prodQty);
   }
 

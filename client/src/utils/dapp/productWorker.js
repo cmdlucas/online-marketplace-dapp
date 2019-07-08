@@ -8,7 +8,7 @@ export const productsFetcher = sFID => {
                 // Get contract instance
                 const instance = await StoreManager.deployed();
                 // Get products from store front specified
-                const products = await instance.getStoreFrontProducts.call(sFID, 0, 1);
+                const products = await instance.getStoreFrontProducts.call(sFID, 0, 25);
                 // extract profiles
                 let allProducts = [];
                 // get parameters from result
@@ -73,7 +73,7 @@ export const productUpdater = p => {
     })
 }
 
-export const productActivator = (pid, status) => {
+export const productActivator = (pid, sfid, status) => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
             const { contracts: { StoreManager }, defaultProfile } = window.dapp;
@@ -81,7 +81,7 @@ export const productActivator = (pid, status) => {
                 // get contract instance
                 const instance = await StoreManager.deployed();                
                 // activate profile
-                await instance.productActivator(pid, status, { from: defaultProfile.addr });
+                await instance.productActivator(sfid, pid, status, { from: defaultProfile.addr });
                 resolve();
             } catch (e) {
                 reject(e);

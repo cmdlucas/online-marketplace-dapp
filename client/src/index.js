@@ -7,13 +7,13 @@ import * as serviceWorker from './serviceWorker';
 
 import store from './model/redux-store';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCog, faEdit, faPlusSquare, faSearch, faCartArrowDown } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faEdit, faPlusSquare, faSearch, faCartArrowDown, faMoneyBill } from '@fortawesome/free-solid-svg-icons'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./_assets/css/general.css";
 
 // Load Font Awesome Icons
-library.add(faCog, faEdit, faPlusSquare, faSearch, faCartArrowDown);
+library.add(faCog, faEdit, faPlusSquare, faSearch, faCartArrowDown, faMoneyBill);
 
 // Render application
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider> , document.getElementById('root'));

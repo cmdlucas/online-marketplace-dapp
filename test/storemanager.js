@@ -136,7 +136,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productActivator(prodId, false, { from: shopOwner });
+            await storeInstance.productActivator(storeFrontId, prodId, false, { from: shopOwner });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }
@@ -148,7 +148,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productActivator(prodId, true, { from: shopOwnerTwo });
+            await storeInstance.productActivator(storeFrontId, prodId, true, { from: shopOwnerTwo });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }
@@ -160,7 +160,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productActivator(prodId, true, { from: shopOwner });
+            await storeInstance.productActivator(storeFrontId, prodId, true, { from: shopOwner });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }

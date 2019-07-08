@@ -13,7 +13,7 @@ class ShopperStoreFrontCard extends Component {
                         <h5>{name}</h5>
                     </div>
                     <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Products Qty: {productQty}</li>
+                        <li className="list-group-item">Products in store: {productQty}</li>
                     </ul>
                     <div className="card-body">
                         <div className="d-flex flex-row">

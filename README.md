@@ -29,6 +29,11 @@ If you plan to deploy app again to rinkeby testnet, first do
 
 Then do, `truffle migrate --network rinkeby`
 
+**Requirements:**
+You can visit this dApp in your browser after running `npm start` by visiting (localhost:3000)[http://localhost:3000]. 
+
+However, you need to have MetaMask or uPort installed in your browser, otherwise the dApp will not be provisioned.
+
 #### Note:
 This application does not consider the fact that it's data is stored on the blockchain where data is virtually visible to everybody. However, I have tried as much as possible not to deal with any sensitive information.
 All user profile data is visible and prone to manipulation by everyone, hence be careful of what you store.

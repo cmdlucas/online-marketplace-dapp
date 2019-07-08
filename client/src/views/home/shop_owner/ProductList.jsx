@@ -33,8 +33,9 @@ class ProductList extends Component
         const products = this.props.products;
         products[index].active = active;
         this.props.setProducts(products);
+        const { sfid } = this.props.match.params;
         // deactivate product in storage
-        productActivator(products[index].pid, active).catch(e => {
+        productActivator(sfid, products[index].pid, active).catch(e => {
             console.log(e);
             alert(`Failed. Couldn't ${active ? "activate" : "deactivate"} product. See console for error(s). Reverting changes...`);
             products[index].active = !active;
