@@ -30,6 +30,7 @@ If you plan to deploy app again to rinkeby testnet, first do
 Then do, `truffle migrate --network rinkeby`
 
 **Requirements:**
+
 You can visit this dApp in your browser after running `npm start` by visiting [localhost:3000](http://localhost:3000).
 
 You should have MetaMask or Mist installed in your browser to allow seamless provisioning of dApp.
