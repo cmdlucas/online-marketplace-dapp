@@ -3,7 +3,7 @@ This is a demo online marketplace that operates on the ethereum blockchain and a
 
 ### Specifications
 
-   - **Admin** manages the central marketplace.
+   - **Root Admin** manages the central marketplace dApp.
    - **Admin** allows store owners to add stores to the marketplace.
    - **Store Owner** manages their store's inventory and funds.
    - **Shoppers** can visit stores and purchase goods that are in stock using cryptocurrency.
