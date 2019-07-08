@@ -1,5 +1,5 @@
 ## About
-This is an online marketplace that operates on the ethereum blockchain and allows shoppers to buy products from store owners.
+This is a demo online marketplace that operates on the ethereum blockchain and allows shoppers to buy products from store owners.
 
 ### Specifications
 
@@ -13,16 +13,21 @@ To start application,
 
 Run a devlopment server from terminal like: `ganache-cli`
 
-Then do,
+Then run these commands in order,
 `truffle compile`
-Then,
+
 `truffle migrate`
-Then
+
+`cd client`
+
 `npm start`
 
-To run smart contract tests:
-Run,
-`truffle test`
+To run smart contract tests: `truffle test`
+
+If you plan to deploy app again to rinkeby testnet, first do
+`npm install truffle-hdwallet-provider`
+
+Then do, `truffle migrate --network rinkeby`
 
 #### Note:
 This application does not consider the fact that it's data is stored on the blockchain where data is virtually visible to everybody. However, I have tried as much as possible not to deal with any sensitive information.
