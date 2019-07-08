@@ -9,3 +9,6 @@ To implement access restriction, we have made an extensive use of modifiers in `
   - Only the root admin can create and update new admin profiles
   - Only admins can create shop owner profiles
   - Only admins and shop owners can update product details
+
+## Withdrawal Pattern
+This is highly common when our contract tries to send funds to an address that requests a withdraw. The address could very well be another contract address which, when called, creates another withdraw order. This will invariably swipe all the funds out of the account in no time. 

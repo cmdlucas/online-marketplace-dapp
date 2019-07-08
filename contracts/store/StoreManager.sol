@@ -6,11 +6,12 @@ import { StoreExtractor } from '../_libs/StoreExtractor.sol';
 /**
  * @title StoreManager
  * @dev Manage store activities here
- * todo:: determine the maximum limit to fetch to prevent a DoS attack
  */
-contract StoreManager is EmitsEvent {
+contract StoreManager is EmitsEvent 
+{
   // allow identification of user
   UserIdentity ui;
+
   // allow extractor to work on arrays of ids
   using StoreExtractor for uint[];
   
@@ -21,16 +22,16 @@ contract StoreManager is EmitsEvent {
   uint[] public sFIDs;
 
   // map each storefront to it's content
-  mapping(uint => StoreExtractor.StoreFront) storeFront;
+  mapping(uint => StoreExtractor.StoreFront) public storeFront;
 
   // map each product id to it's content
-  mapping(uint => StoreExtractor.Product) product;
+  mapping(uint => StoreExtractor.Product) public product;
 
   // map store front to it's products (id)
-  mapping(uint => uint[]) storeFrontProducts;
+  mapping(uint => uint[]) public storeFrontProducts;
 
   // map store owner to their store fronts 
-  mapping(address => uint[]) oMap;
+  mapping(address => uint[]) public oMap;
 
   modifier isShopOwner {
     // require that the caller is a shop owner
@@ -38,8 +39,8 @@ contract StoreManager is EmitsEvent {
   }
   
   // restrict access to product
-  modifier ownsProduct(uint _prodId) {
-    require(product[_prodId].productOwner == msg.sender, 
+  modifier ownsProduct(address _sender, uint _prodId) {
+    require(product[_prodId].productOwner == msg.sender || product[_prodId].productOwner == _sender, 
         "Only the product's owner can do this"); _;
   }
   
@@ -61,7 +62,6 @@ contract StoreManager is EmitsEvent {
   {
     // create unique ID to use
     newIndex = sFIDs.length;
-    // todo:: ensure that we are within range of allowed store fronts
     // add new store front
     storeFront[newIndex] = StoreExtractor.StoreFront(newIndex, true, name, msg.sender);
     // add store front to owner's list
@@ -76,9 +76,10 @@ contract StoreManager is EmitsEvent {
    * @dev Add a new product to a store front
    */
   function addProduct(uint _sFID, uint _price, uint _qty, 
-          string memory _name, string memory _imageId) public ownsStore(_sFID) 
+          string memory _name, string memory _imageId) public ownsStore(_sFID)
           returns (uint newIndex)
   {
+    require(_price > 0, "Price must be more than zero");
     // create unique ID to use
     newIndex = prodCount;
     // register product's details
@@ -93,8 +94,10 @@ contract StoreManager is EmitsEvent {
 
    /**
     * @dev Update a product's details.
+    * @param _sender - allows versatility with function
     */
-   function productUpdater(uint _prodId, uint _price, uint _qty) public ownsProduct(_prodId)
+   function productUpdater(address _sender, uint _prodId, uint _price, uint _qty) public 
+        ownsProduct(_sender, _prodId)
    {
      product[_prodId].price = _price;
      product[_prodId].qty = _qty;
@@ -103,7 +106,7 @@ contract StoreManager is EmitsEvent {
    /**
     * @dev Mark a product as (de)activated.
     */
-   function productActivator(uint _prodId, bool status) public ownsProduct(_prodId)
+   function productActivator(uint _prodId, bool status) public ownsProduct(msg.sender, _prodId)
    {
      product[_prodId].active = status;
    }
@@ -118,49 +121,66 @@ contract StoreManager is EmitsEvent {
 
   /**
    * @dev Get store fronts for a shop owner
-   * todo:: see todo at contract's head
    * @return sFID[], name[], prodQty[]
    */
-  function getStoreFronts(address _storeOwner) public view 
+  function getStoreFronts(address _storeOwner, uint from, uint to) public view 
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
+    // cover range
+    require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return store owner's store fronts data using extractor library
-    return oMap[_storeOwner].extractStoreFronts(storeFront, storeFrontProducts); 
+    return oMap[_storeOwner].extractStoreFronts(from, to, storeFront, storeFrontProducts);
+  }
+
+  /**
+   * @dev Get some store fronts by range
+   * @return sFID[], name[], prodQty[]
+   */
+  function getSomeStoreFronts(uint from, uint to) public view 
+        returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
+  {
+    // cover range
+    require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
+    // return store fronts data using extractor library
+    return sFIDs.extractStoreFronts(from, to, storeFront, storeFrontProducts);
   }
 
   /**
    * @dev Get all store fronts
    * @return sFID[], name[], prodQty[]
+   * todo:: remove this function in future to prevent DoS attack
    */
-  function getAllStoreFronts() public view 
+  function getAllStoreFronts() internal view 
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
     // return store fronts data using extractor library
-    return sFIDs.extractStoreFronts(storeFront, storeFrontProducts);    
+    return sFIDs.extractStoreFronts(0, sFIDs.length, storeFront, storeFrontProducts);    
   }
 
   /**
    * @dev Get store front details
-   * @return sFID[], name[], prodQty[]
+   * @return (string, bool, uint)
    */
-   function getStoreFrontDetails(uint _sFID) public view
+  function getStoreFrontDetails(uint _sFID) public view
          returns (string memory name, bool active, uint prodQty)
-   {
-     name = storeFront[_sFID].name;
-     active = storeFront[_sFID].active;
-     prodQty = storeFrontProducts[_sFID].length;
-     return (name, active, prodQty);
-   }
+  {
+    name = storeFront[_sFID].name;
+    active = storeFront[_sFID].active;
+    prodQty = storeFrontProducts[_sFID].length;
+    return (name, active, prodQty);
+  }
 
   /**
    * @dev Get the products in a store front
    */
-  function getStoreFrontProducts(uint _sFID) public view
+  function getStoreFrontProducts(uint _sFID, uint from, uint to) public view
         returns (uint[] memory, uint[] memory, uint[] memory, 
-        bool[] memory, bytes32[] memory, bytes32[] memory)
+        bool[] memory, bytes32[] memory)
   {
+    // cover range
+    require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return a tuple of arrays of product props
-    return storeFrontProducts[_sFID].extractProducts(product);
+    return storeFrontProducts[_sFID].extractProducts(from, to, product);
   }
 
   /**

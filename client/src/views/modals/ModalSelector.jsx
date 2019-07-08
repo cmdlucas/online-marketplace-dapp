@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { editprofilematcher, createprofilematcher, UserType, createstorefrontmatcher, editproductmatcher, createproductmatcher } from '../../utils/constants';
+import { editprofilematcher, createprofilematcher, UserType, createstorefrontmatcher, 
+    editproductmatcher, createproductmatcher, buyproductmatcher } from '../../utils/constants';
 import AddProfile from './AddProfile';
 import EditProfile from './EditProfile';
 import AddStoreFront from './AddStoreFront';
 import EditProduct from './EditProduct';
 import AddProduct from './AddProduct';
+import BuyProduct from './BuyProduct';
 
 class ModalSelector extends Component {
     render() {
@@ -30,6 +32,11 @@ class ModalSelector extends Component {
                             <Route path={editproductmatcher} exact component={EditProduct} />
                         </>
                     )
+                }
+                {  /** Shopper modals */
+                    <>
+                    <Route path={buyproductmatcher} exact component={BuyProduct} />
+                    </>
                 }
             </Switch>
         );

@@ -2,9 +2,12 @@ const StoreManager = artifacts.require("StoreManager");
 const UserProfileManager = artifacts.require("UserProfileManager");
 
 // Test StoreManager's Logic
+// Here we're testing the logic of all the abilities of the contract
 contract('StoreManager', async accounts => {
     const UserType = { Owner: 0, Admin: 1, ShopOwner: 2 }
     const [owner, admin, adminTwo, shopOwner, shopOwnerTwo] = accounts;
+
+    let storeInstance, storeFrontId, prodCount;
 
     before(async () => {
         // Create new shop owner profile so that we can test contract
@@ -18,18 +21,16 @@ contract('StoreManager', async accounts => {
         storeInstance = await StoreManager.deployed();
     });
 
-    let storeInstance, storeFrontId, prodCount;
-
     it("should create a new store front", async () => {
         let storeFront;
         try {
             // Create store front
             await storeInstance.createStoreFront("Kitube Stores", { from: shopOwner });
             // Get store front details
-            storeFront = await storeInstance.getStoreFronts.call(shopOwner);
-            storeFrontId = storeFront[0][0];
+            storeFront = await storeInstance.getStoreFronts.call(shopOwner, 0, 1);
+            storeFrontId = parseInt(storeFront[0][0]);
         } catch (e) { }
-        // the created store's name should be Kitube Stores
+        // the created store's id should be 0
         assert.equal(storeFrontId, 0, "The store front was not created.");
     });
 
@@ -39,18 +40,19 @@ contract('StoreManager', async accounts => {
             // Create store front
             await storeInstance.createStoreFront("Kitube Stores", { from: shopOwnerTwo });
             // Get store front details
-            storeFront = await storeInstance.getStoreFronts.call(shopOwner);
+            storeFront = await storeInstance.getStoreFronts.call(shopOwner, 0, 1);
             sFID = storeFront[0][1];
         } catch (e) { }
-        // the created store's name should be Kitube Stores
+        // the created store's id should be undefined
         assert.equal(sFID, undefined, "The store front was not created.");
     });
 
     it("should deactivate store front if store front owner calling", async () => {
+        let storeFront;
         try {
             // Update store front
             await storeInstance.storeFrontActivator(storeFrontId, false, { from: shopOwner });
-            // check for store front details
+            // Check for store front details
             storeFront = await storeInstance.getStoreFrontDetails.call(storeFrontId);
         } catch (e) { }
         // the store front's details should have been updated by now
@@ -61,6 +63,8 @@ contract('StoreManager', async accounts => {
         try {
             // Update store front
             await storeInstance.storeFrontActivator(storeFrontId, true, { from: shopOwnerTwo });
+        } catch (e) { }
+        try {
             // check for store front details
             storeFront = await storeInstance.getStoreFrontDetails.call(storeFrontId);
         } catch (e) { }
@@ -69,6 +73,7 @@ contract('StoreManager', async accounts => {
     });
 
     it("should activate store front if store front owner calling", async () => {
+        let storeFront;
         try {
             // Update store front
             await storeInstance.storeFrontActivator(storeFrontId, true, { from: shopOwner });
@@ -107,7 +112,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productUpdater(prodId, 250, 8, { from: shopOwner });
+            await storeInstance.productUpdater(shopOwner, prodId, 250, 8, { from: shopOwner });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }
@@ -119,7 +124,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productUpdater(prodId, 500, 6, { from: shopOwnerTwo });
+            await storeInstance.productUpdater(shopOwnerTwo, prodId, 500, 6, { from: shopOwnerTwo });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }

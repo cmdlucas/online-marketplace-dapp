@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import WorkModalMaster from '../_layout/WorkModalMaster';
 import { Form, FormGroup, Label, Input,} from 'reactstrap';
-import { initialFormInputState } from '../../utils/constants/form.constants';
-import { productUpdater } from '../../utils/dapp/productWorker';
+import { productsPurchaser } from '../../utils/dapp/shopperActionsWorker';
+import { storefronturl } from '../../utils/constants';
 
-class EditProduct extends Component {
+class BuyProduct extends Component {
     state = {
         formdata: {
-            price: {...initialFormInputState},
-            qty: {...initialFormInputState},
+            qty: { value: 1, faulty: false, error: "" },
         }
     }
 
@@ -20,15 +19,6 @@ class EditProduct extends Component {
 
     setFormData(formdata, callback = () => {}) {
         this.setOwnState({ formdata: { ...this.state.formdata, ...formdata }, callback });
-    }
-
-    setPrice(val) {
-        const value = val >= 0 ? val : -1;
-        this.setFormData({
-            price: {
-                value: value, faulty: value === -1, error: ""
-            }
-        })
     }
 
     setQuantity(val) {
@@ -50,16 +40,18 @@ class EditProduct extends Component {
         return true;
     }
 
-    addProduct() {
+    buyProduct() {
         if(this.validated()) {
-            const { price, qty } = this.state.formdata;
-            const { pid } = this.props.match.params;
-            productUpdater({
-                price: price.value, qty: qty.value, pid: pid
+            const { qty } = this.state.formdata;
+            const { pid, sfid, name } = this.props.match.params;
+            productsPurchaser({ 
+                pid, sfid, qty: qty.value
             }).then(() => {
-                window.location.assign("/");
+                const url = storefronturl(sfid, name);
+                this.props.history.replace(url);
+                window.location.reload();
             }).catch(e => {
-                alert(`Sorry. We couldn't edit product. See console for error(s)`);
+                alert(`Sorry. We couldn't purchase this product. See console for error(s)`);
                 console.log(e);
             })
         }
@@ -67,16 +59,11 @@ class EditProduct extends Component {
 
     render() {
         return (
-            <WorkModalMaster title={`Edit Product`} actionTitle="Proceed" actionDoer={() => this.addProduct()}>    
-                <Form onSubmit={e=>{e.preventDefault(); this.addProduct(); return false;}}>
-                    <FormGroup>
-                        <Label for="price">Price</Label>
-                        <Input type="number" min="0" name="price" id="price"
-                            onChange={e => this.setPrice(e.target.value)} placeholder="Enter product's price" />
-                    </FormGroup>
+            <WorkModalMaster title={`Buy Product`} actionTitle="Proceed" actionDoer={() => this.buyProduct()}>    
+                <Form onSubmit={e=>{e.preventDefault(); this.buyProduct(); return false;}}>
                     <FormGroup>
                         <Label for="qty">Quantity</Label>
-                        <Input type="number" min="1" name="qty" id="qty"
+                        <Input type="number" min="1" name="qty" id="qty" defaultValue={1}
                             onChange={e => this.setQuantity(e.target.value)} placeholder="Enter product's quantity" />
                     </FormGroup>
                 </Form>
@@ -93,4 +80,4 @@ const mapDispatchToProps = dispatch => ({
 
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditProduct));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BuyProduct));

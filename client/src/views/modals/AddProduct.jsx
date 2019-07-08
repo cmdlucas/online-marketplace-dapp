@@ -69,7 +69,9 @@ class AddProduct extends Component {
                 name: name.value, price: price.value,
                 qty: qty.value, sFID: params.sfid, imageId: "1.jpg"
             }).then(() => {
-                this.props.history.replace(storefronturl(params.sfid, params.name))
+                const url = storefronturl(params.sfid, params.name);
+                this.props.history.replace(url);
+                window.location.reload();
             }).catch(e => {
                 alert(`Sorry. We couldn't create product. See console for error(s)`);
                 console.log(e);
@@ -89,11 +91,11 @@ class AddProduct extends Component {
                     <FormGroup>
                         <Label for="price">Price</Label>
                         <Input type="number" min="0" name="price" id="price"
-                            onChange={e => this.setPrice(e.target.value)} placeholder="Enter product's price" />
+                            onChange={e => this.setPrice(e.target.value)} placeholder="Enter product's price in ETH" />
                     </FormGroup>
                     <FormGroup>
                         <Label for="qty">Quantity</Label>
-                        <Input type="number" min="0" name="qty" id="qty"
+                        <Input type="number" min="1" name="qty" id="qty"
                             onChange={e => this.setQuantity(e.target.value)} placeholder="Enter product's quantity" />
                     </FormGroup>
                 </Form>

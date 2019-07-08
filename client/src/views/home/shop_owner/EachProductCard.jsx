@@ -5,7 +5,7 @@ import { editproducturl } from '../../../utils/constants';
 
 class EachProductCard extends Component {
     render() {
-        const { index, sfid, active, name, price, productQty, activate, deActivate } = this.props;
+        const { index, sfid, active, name, storeName, price, productQty, activate, deActivate } = this.props;
         return (
             <div className="col-md-4">
                 <div className="card position-rel">
@@ -22,14 +22,14 @@ class EachProductCard extends Component {
                     <img className="card-img-top" src="https://via.placeholder.com/50" alt={name} />
                     <div className="card-header"> {name} </div>
                     <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Price: ${price}</li>
+                        <li className="list-group-item">Price: ETH {price}</li>
                         <li className="list-group-item">Quantity: {productQty}</li>
                     </ul>
                     <div className="card-body">
                         {/** Make profile manageable only when still active */}
                         <div className="d-flex flex-row">
                             <div className="p-2">
-                                <Link to={editproducturl(sfid, name, index - 1)}>
+                                <Link to={editproducturl(sfid, storeName, index - 1)}>
                                     <button className="btn btn-dark">
                                         <FontAwesomeIcon icon="edit" />
                                         {' '}

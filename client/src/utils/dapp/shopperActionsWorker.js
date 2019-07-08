@@ -7,6 +7,7 @@ export const storeFrontsFetcher = () => {
             try {
                 // Get contract instance
                 const instance = await StoreManager.deployed();
+                
                 // Get store fronts from shop owner specified
                 const storeFronts = await instance.getSomeStoreFronts.call(0, 25);
                 // extract profiles
@@ -30,16 +31,32 @@ export const storeFrontsFetcher = () => {
     })
 }
 
-export const storeFrontCreater = sF => {
+export const productsFetcher = sFID => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
-            const { contracts: { StoreManager }, defaultProfile } = window.dapp;
+            const { contracts: { StoreManager } } = window.dapp;
             try {
                 // Get contract instance
                 const instance = await StoreManager.deployed();
-                // update contract state
-                await instance.createStoreFront(sF.name,  { from: defaultProfile.addr });
-                resolve();
+                // Get products from store front specified
+                const products = await instance.getStoreFrontProducts.call(sFID, 0, 25);
+                // extract profiles
+                let allProducts = [];
+                // get parameters from result
+                const n = products[0].length;
+                for(let i = 0; i < n; i++) {
+                    if(products[3][i]) {
+                        allProducts.push({ 
+                            pid: parseInt(products[0][i]),
+                            price: parseInt(products[1][i]),
+                            productQty: parseInt(products[2][i]),
+                            active: products[3][i],
+                            name: hexToString(products[4][i]),
+                            imageId: "1.jpg"
+                        });   
+                    }                 
+                }
+                resolve(allProducts);
             } catch (e) {
                 reject(e);
             }
@@ -48,20 +65,23 @@ export const storeFrontCreater = sF => {
     })
 }
 
-export const storeFrontActivator = (sFID, status) => {
+export const productsPurchaser = p => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
-            const { contracts: { StoreManager }, defaultProfile } = window.dapp;
-            try{
-                // get contract instance
-                const instance = await StoreManager.deployed();                
-                // activate profile
-                await instance.storeFrontActivator(sFID, status, { from: defaultProfile.addr });
+            const { contracts: { PurchaseManager }, accounts } = window.dapp;
+            const { pid, sfid, qty } = p;
+            try {
+                // Get contract instance
+                const instance = await PurchaseManager.deployed();
+                // Buy product
+                await instance.buyProduct(
+                    pid, qty, sfid, { from: accounts[0], value: 2 }
+                    );
                 resolve();
             } catch (e) {
                 reject(e);
             }
         }
-        reject(`dApp not provisioned.`)
+        reject(`dApp not provisioned.`);
     })
 }

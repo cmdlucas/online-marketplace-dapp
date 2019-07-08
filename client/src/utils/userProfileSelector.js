@@ -27,7 +27,7 @@ const userProfileSelector = async () => {
             // store all the available profiles
             window.dapp.profiles = profiles;
             // choose the default profile
-            window.dapp.defaultProfile = (profiles.length > 0) ? profiles[0] : {};
+            window.dapp.defaultProfile = (profiles && profiles.length > 0) ? profiles[0] : {};
         } catch (e) {
             console.log(e);
         }
