@@ -91,7 +91,7 @@ class AddProduct extends Component {
                     <FormGroup>
                         <Label for="price">Price</Label>
                         <Input type="number" min="0" name="price" id="price"
-                            onChange={e => this.setPrice(e.target.value)} placeholder="Enter product's price" />
+                            onChange={e => this.setPrice(e.target.value)} placeholder="Enter product's price in ETH" />
                     </FormGroup>
                     <FormGroup>
                         <Label for="qty">Quantity</Label>

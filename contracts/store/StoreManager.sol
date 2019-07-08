@@ -7,9 +7,11 @@ import { StoreExtractor } from '../_libs/StoreExtractor.sol';
  * @title StoreManager
  * @dev Manage store activities here
  */
-contract StoreManager is EmitsEvent {
+contract StoreManager is EmitsEvent 
+{
   // allow identification of user
   UserIdentity ui;
+
   // allow extractor to work on arrays of ids
   using StoreExtractor for uint[];
   
@@ -19,19 +21,17 @@ contract StoreManager is EmitsEvent {
   // keep track of all the store front by their IDs
   uint[] public sFIDs;
 
-  // event Mad(uint);
-
   // map each storefront to it's content
-  mapping(uint => StoreExtractor.StoreFront) storeFront;
+  mapping(uint => StoreExtractor.StoreFront) public storeFront;
 
   // map each product id to it's content
-  mapping(uint => StoreExtractor.Product) product;
+  mapping(uint => StoreExtractor.Product) public product;
 
   // map store front to it's products (id)
-  mapping(uint => uint[]) storeFrontProducts;
+  mapping(uint => uint[]) public storeFrontProducts;
 
   // map store owner to their store fronts 
-  mapping(address => uint[]) oMap;
+  mapping(address => uint[]) public oMap;
 
   modifier isShopOwner {
     // require that the caller is a shop owner
@@ -39,8 +39,8 @@ contract StoreManager is EmitsEvent {
   }
   
   // restrict access to product
-  modifier ownsProduct(uint _prodId) {
-    require(product[_prodId].productOwner == msg.sender, 
+  modifier ownsProduct(address _sender, uint _prodId) {
+    require(product[_prodId].productOwner == msg.sender || product[_prodId].productOwner == _sender, 
         "Only the product's owner can do this"); _;
   }
   
@@ -79,6 +79,7 @@ contract StoreManager is EmitsEvent {
           string memory _name, string memory _imageId) public ownsStore(_sFID)
           returns (uint newIndex)
   {
+    require(_price > 0, "Price must be more than zero");
     // create unique ID to use
     newIndex = prodCount;
     // register product's details
@@ -93,8 +94,10 @@ contract StoreManager is EmitsEvent {
 
    /**
     * @dev Update a product's details.
+    * @param _sender - allows versatility with function
     */
-   function productUpdater(uint _prodId, uint _price, uint _qty) public ownsProduct(_prodId)
+   function productUpdater(address _sender, uint _prodId, uint _price, uint _qty) public 
+        ownsProduct(_sender, _prodId)
    {
      product[_prodId].price = _price;
      product[_prodId].qty = _qty;
@@ -103,7 +106,7 @@ contract StoreManager is EmitsEvent {
    /**
     * @dev Mark a product as (de)activated.
     */
-   function productActivator(uint _prodId, bool status) public ownsProduct(_prodId)
+   function productActivator(uint _prodId, bool status) public ownsProduct(msg.sender, _prodId)
    {
      product[_prodId].active = status;
    }
@@ -123,6 +126,7 @@ contract StoreManager is EmitsEvent {
   function getStoreFronts(address _storeOwner, uint from, uint to) public view 
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
+    // cover range
     require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return store owner's store fronts data using extractor library
     return oMap[_storeOwner].extractStoreFronts(from, to, storeFront, storeFrontProducts);
@@ -135,6 +139,7 @@ contract StoreManager is EmitsEvent {
   function getSomeStoreFronts(uint from, uint to) public view 
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
+    // cover range
     require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return store fronts data using extractor library
     return sFIDs.extractStoreFronts(from, to, storeFront, storeFrontProducts);
@@ -172,6 +177,7 @@ contract StoreManager is EmitsEvent {
         returns (uint[] memory, uint[] memory, uint[] memory, 
         bool[] memory, bytes32[] memory)
   {
+    // cover range
     require(from >= 0 && to >= 0 && to - from <= 25, "Invalid range supplied.");
     // return a tuple of arrays of product props
     return storeFrontProducts[_sFID].extractProducts(from, to, product);

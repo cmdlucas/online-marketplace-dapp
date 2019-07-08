@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import WorkModalMaster from '../_layout/WorkModalMaster';
 import { Form, FormGroup, Label, Input,} from 'reactstrap';
 import { productsPurchaser } from '../../utils/dapp/shopperActionsWorker';
+import { storefronturl } from '../../utils/constants';
 
 class BuyProduct extends Component {
     state = {
@@ -41,15 +42,24 @@ class BuyProduct extends Component {
 
     buyProduct() {
         if(this.validated()) {
-            // const { qty } = this.state.formdata;
-            // const { pid } = this.props.match.params;
-            // productsPurchaser()
+            const { qty } = this.state.formdata;
+            const { pid, sfid, name } = this.props.match.params;
+            productsPurchaser({ 
+                pid, sfid, qty
+            }).then(() => {
+                const url = storefronturl(sfid, name);
+                this.props.history.replace(url);
+                window.location.reload();
+            }).catch(e => {
+                alert(`Sorry. We couldn't purchase this product. See console for error(s)`);
+                console.log(e);
+            })
         }
     }
 
     render() {
         return (
-            <WorkModalMaster title={`Edit Product`} actionTitle="Proceed" actionDoer={() => this.buyProduct()}>    
+            <WorkModalMaster title={`Buy Product`} actionTitle="Proceed" actionDoer={() => this.buyProduct()}>    
                 <Form onSubmit={e=>{e.preventDefault(); this.buyProduct(); return false;}}>
                     <FormGroup>
                         <Label for="qty">Quantity</Label>

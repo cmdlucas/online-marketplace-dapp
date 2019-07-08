@@ -57,6 +57,7 @@ class ShopperProductList extends Component
                                                     pid={product.pid}
                                                     sfid={sfid}
                                                     price={product.price}
+                                                    storeName={name}
                                                     name={product.name}
                                                     productQty={product.productQty}
                                                     active={product.active}

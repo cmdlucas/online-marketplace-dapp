@@ -2,9 +2,12 @@ const StoreManager = artifacts.require("StoreManager");
 const UserProfileManager = artifacts.require("UserProfileManager");
 
 // Test StoreManager's Logic
+// Here we're testing the logic of all the abilities of the contract
 contract('StoreManager', async accounts => {
     const UserType = { Owner: 0, Admin: 1, ShopOwner: 2 }
     const [owner, admin, adminTwo, shopOwner, shopOwnerTwo] = accounts;
+
+    let storeInstance, storeFrontId, prodCount;
 
     before(async () => {
         // Create new shop owner profile so that we can test contract
@@ -18,13 +21,11 @@ contract('StoreManager', async accounts => {
         storeInstance = await StoreManager.deployed();
     });
 
-    let storeInstance, storeFrontId, prodCount;
-
     it("should create a new store front", async () => {
-        let storeFront, sI;
+        let storeFront;
         try {
             // Create store front
-            sI = await storeInstance.createStoreFront("Kitube Stores", { from: shopOwner });
+            await storeInstance.createStoreFront("Kitube Stores", { from: shopOwner });
             // Get store front details
             storeFront = await storeInstance.getStoreFronts.call(shopOwner, 0, 1);
             storeFrontId = parseInt(storeFront[0][0]);
@@ -111,7 +112,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productUpdater(prodId, 250, 8, { from: shopOwner });
+            await storeInstance.productUpdater(shopOwner, prodId, 250, 8, { from: shopOwner });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }
@@ -123,7 +124,7 @@ contract('StoreManager', async accounts => {
         try {
             const prodId = prodCount - 1;
             // Update product
-            await storeInstance.productUpdater(prodId, 500, 6, { from: shopOwnerTwo });
+            await storeInstance.productUpdater(shopOwnerTwo, prodId, 500, 6, { from: shopOwnerTwo });
             // check for product details
             product = await storeInstance.getProductDetails.call(prodId);
         } catch (e) { }
