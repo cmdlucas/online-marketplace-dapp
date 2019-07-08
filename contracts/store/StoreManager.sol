@@ -136,7 +136,7 @@ contract StoreManager is EmitsEvent
               ? storeFrontProductsActive[_sfid] + 1  
               : storeFrontProducts[_sfid].length
             )
-          : storeFrontProducts[_sfid].length - 1;
+          : storeFrontProductsActive[_sfid] - 1;
    }
 
    /**

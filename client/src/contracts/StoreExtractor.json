@@ -3670,6 +3670,13 @@
                               "isSlot": false,
                               "src": "2785:8:1",
                               "valueSize": 1
+                            },
+                            "_name": {
+                              "declaration": 380,
+                              "isOffset": false,
+                              "isSlot": false,
+                              "src": "2766:5:1",
+                              "valueSize": 1
                             }
                           },
                           {
@@ -3678,6 +3685,13 @@
                               "isOffset": false,
                               "isSlot": false,
                               "src": "2766:5:1",
+                              "valueSize": 1
+                            },
+                            "prodName": {
+                              "declaration": 375,
+                              "isOffset": false,
+                              "isSlot": false,
+                              "src": "2785:8:1",
                               "valueSize": 1
                             }
                           }
@@ -7907,6 +7921,13 @@
                               "isSlot": false,
                               "src": "2785:8:1",
                               "valueSize": 1
+                            },
+                            "_name": {
+                              "declaration": 380,
+                              "isOffset": false,
+                              "isSlot": false,
+                              "src": "2766:5:1",
+                              "valueSize": 1
                             }
                           },
                           {
@@ -7915,6 +7936,13 @@
                               "isOffset": false,
                               "isSlot": false,
                               "src": "2766:5:1",
+                              "valueSize": 1
+                            },
+                            "prodName": {
+                              "declaration": 375,
+                              "isOffset": false,
+                              "isSlot": false,
+                              "src": "2785:8:1",
                               "valueSize": 1
                             }
                           }
@@ -8488,7 +8516,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T17:34:12.142Z",
+  "updatedAt": "2019-07-08T18:12:00.019Z",
   "devdoc": {
     "details": "This library has functions to extract elements ",
     "methods": {},

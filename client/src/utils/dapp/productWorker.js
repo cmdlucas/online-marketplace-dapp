@@ -73,13 +73,13 @@ export const productUpdater = p => {
     })
 }
 
-export const productActivator = (pid, sfid, status) => {
+export const productActivator = (sfid, pid, status) => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
             const { contracts: { StoreManager }, defaultProfile } = window.dapp;
             try{
                 // get contract instance
-                const instance = await StoreManager.deployed();                
+                const instance = await StoreManager.deployed();             
                 // activate profile
                 await instance.productActivator(sfid, pid, status, { from: defaultProfile.addr });
                 resolve();

@@ -13,7 +13,7 @@ const PreLoad = ({ dAppLoading, dAppInitFailed, reloader, error }) => {
                         <Spinner type="grow" color="warning" style={spinnerSize}/>
                         <p>Provisioning Marketplace</p>
                         <p className="text-warning">
-                            (Please ensure that you have MetaMask or uPort extension installed)
+                            (Please ensure that you have MetaMask or Mist extension installed)
                         </p>
                     </>) : ""
             }

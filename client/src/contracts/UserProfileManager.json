@@ -21851,10 +21851,16 @@
       "links": {},
       "address": "0x5adeC2C361078a2e1dD58004460FB56dbD989373",
       "transactionHash": "0xfa46aa5ffe238f181c8da4eaa18e3e65ae6e4704310724fa868fbd40bd4f302e"
+    },
+    "1562609089001": {
+      "events": {},
+      "links": {},
+      "address": "0x32bF16122A2F443FFb1F5f78Ef7f5aDcfD5457c6",
+      "transactionHash": "0x2c0132aab1caa7b4439deba367a6c4502d03388e8856748a33972aca8781796d"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T17:34:16.636Z",
+  "updatedAt": "2019-07-08T19:26:41.780Z",
   "devdoc": {
     "details": "This contract provides us a way to store users profile and update them based on the permissions declared. 1. dApp Owner (who is also an admin) can create and update admin and shop owner profile 2. dApp Admin can create shop owner profile 3. dApp Admin can update both self and shop owner profile 4. dApp shopOwner can only update their own profile  * todo:: manage the total number of users we can create to avoid a DoS exploitation where  so many accounts get created and the loops to fetch makes us always run out of gas.",
     "methods": {

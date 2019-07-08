@@ -828,7 +828,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T17:34:12.160Z",
+  "updatedAt": "2019-07-08T18:12:00.048Z",
   "devdoc": {
     "details": "contract to hold all the events that we emit",
     "methods": {},
