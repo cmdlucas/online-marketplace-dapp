@@ -17259,10 +17259,16 @@
       "links": {},
       "address": "0x84eb6bD57910Dd6bC55d582bf614Bcec7a2E5c2a",
       "transactionHash": "0xb61e69bfb87089a4cc54273b145d18c477375029bfa32b4e3dc55a81d501ed95"
+    },
+    "1562621299182": {
+      "events": {},
+      "links": {},
+      "address": "0x8c91F850fD58af0ba2ffCE467f2DadB2bAaBc106",
+      "transactionHash": "0x9b6d18911931a8bf04a5c1feba2afc2d3ea83235122011171e6a0fa8ca9e0c71"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T20:51:39.146Z",
+  "updatedAt": "2019-07-08T21:32:30.970Z",
   "devdoc": {
     "details": "Manage store activities here",
     "methods": {

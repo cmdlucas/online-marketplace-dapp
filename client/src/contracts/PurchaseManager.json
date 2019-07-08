@@ -8670,10 +8670,16 @@
       "links": {},
       "address": "0x4a15981f7DD6377413aEFeF7A681aeC520E5e97c",
       "transactionHash": "0xf722703be87695c5cf9bde21498e5d78b79b9acd5b75f6fd20da502169dedfd1"
+    },
+    "1562621299182": {
+      "events": {},
+      "links": {},
+      "address": "0xDbEC2FeB2e211f4B3E505DCC18B3065499b33ef8",
+      "transactionHash": "0x3e76b13ad4e25656af5edb3828f23a5fa86ac7cc141e48370640a73426fb2ba9"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T20:51:39.177Z",
+  "updatedAt": "2019-07-08T21:32:30.996Z",
   "devdoc": {
     "details": "Manage all store purchases here",
     "methods": {

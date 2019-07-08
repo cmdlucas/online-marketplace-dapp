@@ -6,7 +6,7 @@ import { hexToString } from "web3-utils";
 export const profilesFetcher = type => {
     return new Promise(async (resolve, reject) => {
         if (window.dapp) {
-            const { contracts: { UserProfileManager } } = window.dapp;
+            const { contracts: { UserProfileManager }, accounts } = window.dapp;
             try {
                 // Get contract instance
                 const instance = await UserProfileManager.deployed();
@@ -14,10 +14,10 @@ export const profilesFetcher = type => {
                 let profiles;
                 switch (type) {
                     case UserType.Admin:
-                        profiles = await instance.getAdminsProfiles.call();
+                        profiles = await instance.getAdminsProfiles({ from: accounts[0] });
                         break;
                     case UserType.ShopOwner:
-                        profiles = await instance.getShopOwnersProfiles.call();
+                        profiles = await instance.getShopOwnersProfiles({ from: accounts[0] });
                         break;
                     default:
                         break;
