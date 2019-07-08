@@ -8,4 +8,4 @@ It is clear that gas is gold in ethereum. You always have a limit; once this lim
 Improve the contracts to minimize looping by emitting searchable indices after each transaction/message call so that we only loop on the front-end.
 
 ## Re-entrancy attack
-I avoided this by ensuring that all balances are set to **zero** befor transfer is called on them.
+I avoided this by ensuring that all balances are set to **zero** before `address.transfer()` is called within a function.
