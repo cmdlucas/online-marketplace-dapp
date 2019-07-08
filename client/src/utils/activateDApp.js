@@ -27,6 +27,7 @@ const loadDAPP = (resolve, reject) => {
             // set providers on trufflised contracts
             dapp.contracts.UserProfileManager.setProvider(web3Provider);
             dapp.contracts.StoreManager.setProvider(web3Provider);
+            dapp.contracts.PurchaseManager.setProvider(web3Provider);
 
             // make dapp globally available
             window.dapp = dapp;

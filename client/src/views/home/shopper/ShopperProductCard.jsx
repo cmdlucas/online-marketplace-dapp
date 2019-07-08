@@ -13,7 +13,7 @@ class EachProductCard extends Component {
                     <img className="card-img-top" src="https://via.placeholder.com/50" alt={`Loading ${name}...`} />
                     <div className="card-header"> {name} </div>
                     <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Price: ETH{price}</li>
+                        <li className="list-group-item">Price: ETH {price}</li>
                         <li className="list-group-item">In Stock: {productQty}</li>
                     </ul>
                     <div className="card-body">

@@ -95,6 +95,7 @@ class ProductList extends Component
                                                     sfid={sfid}
                                                     price={product.price}
                                                     name={product.name}
+                                                    storeName={name}
                                                     productQty={product.productQty}
                                                     active={product.active}
                                                     activate={() => this.activateProduct(index)}

@@ -45,7 +45,7 @@ class BuyProduct extends Component {
             const { qty } = this.state.formdata;
             const { pid, sfid, name } = this.props.match.params;
             productsPurchaser({ 
-                pid, sfid, qty
+                pid, sfid, qty: qty.value
             }).then(() => {
                 const url = storefronturl(sfid, name);
                 this.props.history.replace(url);

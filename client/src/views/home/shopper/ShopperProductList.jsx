@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Spinner } from 'reactstrap';
 import { connect } from 'react-redux';
-import { productsFetcher } from '../../../utils/dapp/productWorker';
+import { productsFetcher } from '../../../utils/dapp/shopperActionsWorker';
 import ShopperProductCard from './ShopperProductCard';
 import { setProducts } from '../../../model/redux/action/products';
 
