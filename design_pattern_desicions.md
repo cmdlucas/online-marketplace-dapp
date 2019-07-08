@@ -3,12 +3,18 @@ It is clear that anybody can read our contract's state. In this application, we 
 
 #### Situation 1:
 
-To implement access restriction, we have made an extensive use of modifiers in `UserProfileManager.sol` and it's base contracts, so that
+To implement access restriction, we have made use of modifiers in `UserProfileManager.sol`, so that
 
   - Only the root admin - the contract deployer & owner - can update it's own profile
   - Only the root admin can create and update new admin profiles
   - Only admins can create shop owner profiles
   - Only admins and shop owners can update product details
+
+#### Situation 2:
+
+To implement access restriction, we have use of modifiers in `PurchaseManager.sol`, so that
+
+  - Only the shop owners can withdraw funds
 
 ## Withdrawal Pattern
 This is highly common when our contract tries to send funds to an address that requests a withdraw. The address could very well be another contract address which, when called, creates another withdraw order. This will invariably swipe all the funds out of the account in no time. 
