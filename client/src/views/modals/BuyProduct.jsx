@@ -43,9 +43,9 @@ class BuyProduct extends Component {
     buyProduct() {
         if(this.validated()) {
             const { qty } = this.state.formdata;
-            const { pid, sfid, name } = this.props.match.params;
+            const { pid, sfid, name, price } = this.props.match.params;
             productsPurchaser({ 
-                pid, sfid, qty: qty.value
+                pid, sfid, qty: qty.value, price
             }).then(() => {
                 const url = storefronturl(sfid, name);
                 this.props.history.replace(url);

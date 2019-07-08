@@ -36,6 +36,7 @@ library StoreExtractor {
   {
     uint dest = to >= sFIDs.length ? sFIDs.length : to;
     uint diff = to - from;
+    diff = diff > dest ? dest : diff;
     
     // extract all store front props;
     uint[] memory productsQtys = new uint[] (diff);
@@ -75,6 +76,7 @@ library StoreExtractor {
   {
     uint dest = to >= prods.length ? prods.length : to;
     uint diff = to - from;
+    diff = diff > dest ? dest : diff;  
 
     id = new uint[] (diff);
     price = new uint[] (diff);

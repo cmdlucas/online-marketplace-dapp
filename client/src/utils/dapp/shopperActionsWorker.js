@@ -69,14 +69,13 @@ export const productsPurchaser = p => {
     return new Promise(async (resolve, reject) => {
         if(window.dapp) {
             const { contracts: { PurchaseManager }, accounts } = window.dapp;
-            const { pid, sfid, qty } = p;
+            const { pid, sfid, qty, price } = p;
             try {
                 // Get contract instance
                 const instance = await PurchaseManager.deployed();
                 // Buy product
                 await instance.buyProduct(
-                    pid, qty, sfid, { from: accounts[0], value: 2 }
-                    );
+                    pid, qty, sfid, { value: price * qty, from: accounts[0] } );
                 resolve();
             } catch (e) {
                 reject(e);

@@ -25,6 +25,7 @@ export const withdrawFunds = amt => {
                 // Get contract instance
                 const instance = await PurchaseManager.deployed();
                 // Get user balance
+                console.log(amt)
                 await instance.withdrawFunds(amt, { from: addr });
                 resolve();
             } catch (e) {

@@ -6517,10 +6517,16 @@
       "links": {},
       "address": "0xdcdaD5BACC09ee5CBb4d42c7B6542404c21b14D4",
       "transactionHash": "0x84ce83b571149478d702851ea36f2c66a5b297295c01820a326b1d972097e0f0"
+    },
+    "1562591870414": {
+      "events": {},
+      "links": {},
+      "address": "0x81418b78127fCa23C25Cc81a72f7BB726e3EC645",
+      "transactionHash": "0x0dadb4f990aa08acdd07a627740201ec6dd26c21e61e2c521d6168fd5552985c"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T11:24:44.084Z",
+  "updatedAt": "2019-07-08T13:28:46.329Z",
   "devdoc": {
     "details": "This contract defines who a user is, It also provides permissions through its modifiers",
     "methods": {

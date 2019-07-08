@@ -20,7 +20,7 @@ class EachProductCard extends Component {
                         {/** Make profile manageable only when still active */}
                         <div className="d-flex flex-row">
                             <div className="p-2">
-                                <Link to={buyproducturl(sfid, storeName, pid)}>
+                                <Link to={buyproducturl(sfid, storeName, pid, price)}>
                                     <button className="btn btn-primary">
                                         <FontAwesomeIcon icon="cart-arrow-down" />
                                         {' '}

@@ -4,12 +4,12 @@ import { withdrawFunds } from '../../utils/dapp/accountWorker';
 
 class WithdrawFunds extends Component {
     state = {
-        amt: 0
+        amt: 1
     }
 
     setAmount(amt) {
         this.setState({
-            amt: amt, ...this.state
+            ...this.state, amt: amt            
         })
     }
 
