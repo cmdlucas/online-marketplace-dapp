@@ -7505,6 +7505,12 @@
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x22E84d89419fFa08060b5a1F5b8a424De82C0339",
+      "transactionHash": "0x3b601b5094ea289c80e2208a7c48e21cee340bf113cbd6dfc66133b6980d9745"
+    },
     "1562591870414": {
       "events": {},
       "links": {},
@@ -7520,12 +7526,12 @@
     "1562614233944": {
       "events": {},
       "links": {},
-      "address": "0x259Eb6Da9d7d3E9546c891cDF8E53e7D36dF1992",
-      "transactionHash": "0x4dc1ba0f3b48bbd085f89d22c0711107e7af3f51ce4b88844a58e7e2d8f034f9"
+      "address": "0xfe63A10B7C7Df10c792b83255787b0C282FEc6B6",
+      "transactionHash": "0xb56ccadf2cbe14b10270e78e559635e0c4f9b2f2d64794d50a678edc89321b3d"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T19:31:13.611Z",
+  "updatedAt": "2019-07-08T20:51:39.018Z",
   "devdoc": {
     "details": "This contract defines who a user is, It also provides permissions through its modifiers",
     "methods": {

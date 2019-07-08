@@ -17236,6 +17236,12 @@
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x4aCf38D720981f77ca5744EF154de34E55daC4A5",
+      "transactionHash": "0xe185da5a5174bbfb8dd0e5ea75153c18e833818afdf7d5f4d1bb466c01363c59"
+    },
     "1562591870414": {
       "events": {},
       "links": {},
@@ -17251,12 +17257,12 @@
     "1562614233944": {
       "events": {},
       "links": {},
-      "address": "0x9763bC1Ca250eeB24C918F31Bd467A7cc9aF3CC0",
-      "transactionHash": "0x7ebf205b06fff926ff0dfb07e35eeb40327bd13b24875cfa89a9106445962de2"
+      "address": "0x84eb6bD57910Dd6bC55d582bf614Bcec7a2E5c2a",
+      "transactionHash": "0xb61e69bfb87089a4cc54273b145d18c477375029bfa32b4e3dc55a81d501ed95"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T19:31:13.716Z",
+  "updatedAt": "2019-07-08T20:51:39.146Z",
   "devdoc": {
     "details": "Manage store activities here",
     "methods": {

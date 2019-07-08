@@ -4,4 +4,14 @@ testnet: rinkeby
 
 deployed contract addresses:
    
-   -  
+   -  UserIdenitity 
+      - 0x22E84d89419fFa08060b5a1F5b8a424De82C0339
+
+   -  UserProfileManager
+      - 0x9C3452614Ff6983FA98fd34499aBc2f6e1a68900
+
+   -  StoreManager
+      - 0x4aCf38D720981f77ca5744EF154de34E55daC4A5
+
+   -  PurchaseManager
+      - 0x70AD82Bb49D4A7FCe7C98cF66b09e516B27214D5

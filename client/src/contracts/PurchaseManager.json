@@ -8647,6 +8647,12 @@
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x70AD82Bb49D4A7FCe7C98cF66b09e516B27214D5",
+      "transactionHash": "0x8aed8817af9e3f4b2c5bb5b038e36709fe50c62c17dc1b120b3058b24d3fc856"
+    },
     "1562591870414": {
       "events": {},
       "links": {},
@@ -8662,12 +8668,12 @@
     "1562614233944": {
       "events": {},
       "links": {},
-      "address": "0x43d2ff13C7c3EE879A30006203b01c66e73033C5",
-      "transactionHash": "0x2e9514b1c35b2db28f570da6e31264b2c0bb74b6e7d1b10a62b647929175a8de"
+      "address": "0x4a15981f7DD6377413aEFeF7A681aeC520E5e97c",
+      "transactionHash": "0xf722703be87695c5cf9bde21498e5d78b79b9acd5b75f6fd20da502169dedfd1"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T19:31:13.733Z",
+  "updatedAt": "2019-07-08T20:51:39.177Z",
   "devdoc": {
     "details": "Manage all store purchases here",
     "methods": {

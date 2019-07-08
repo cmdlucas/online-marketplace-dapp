@@ -21846,6 +21846,12 @@
     "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
   },
   "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x9C3452614Ff6983FA98fd34499aBc2f6e1a68900",
+      "transactionHash": "0x7fe037580bcb770025702ae38446315b8b6bf43f55293b9d34254d11bca925a5"
+    },
     "1562591870414": {
       "events": {},
       "links": {},
@@ -21861,12 +21867,12 @@
     "1562614233944": {
       "events": {},
       "links": {},
-      "address": "0xa2Dd1ED1B58aC9f65320Cf20c50a0B689155fBe3",
-      "transactionHash": "0x9f6b4edacd0b1c3332b8ddfafda0fb7cf235c865a2e503d088057e915cffd1fb"
+      "address": "0x14ADB72A0829601A4d279889E5eEA85dAe7b0624",
+      "transactionHash": "0x8504c3e8b0eb733bc9a1d8adc68a17f63bfefcb2cd0790ebe1f5701f8ac9bf65"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-07-08T19:31:13.673Z",
+  "updatedAt": "2019-07-08T20:51:39.086Z",
   "devdoc": {
     "details": "This contract provides us a way to store users profile and update them based on the permissions declared. 1. dApp Owner (who is also an admin) can create and update admin and shop owner profile 2. dApp Admin can create shop owner profile 3. dApp Admin can update both self and shop owner profile 4. dApp shopOwner can only update their own profile  * todo:: manage the total number of users we can create to avoid a DoS exploitation where  so many accounts get created and the loops to fetch makes us always run out of gas.",
     "methods": {
