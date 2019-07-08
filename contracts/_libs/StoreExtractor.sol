@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 /**
- * @title UserIdentity
+ * @title StoreExtractor
  * @dev This library has functions to extract elements 
  */
 library StoreExtractor {
@@ -34,8 +34,12 @@ library StoreExtractor {
         mapping(uint => uint) storage storeFrontProductsActive) internal view
         returns (uint[] memory, uint[] memory, bool[] memory, bytes32[] memory)
   {
+    // get actual end of range
     uint dest = to >= sFIDs.length ? sFIDs.length : to;
+    // range difference
     uint diff = to - from;
+    // sometimes the range difference might be more 
+    // than the data length. In such cases, we provide a fallback
     diff = diff > dest ? dest : diff;
     
     // extract all store front props;
@@ -74,8 +78,12 @@ library StoreExtractor {
         returns (uint[] memory id, uint[] memory price, uint[] memory qty, 
         bool[] memory active, bytes32[] memory name)
   {
+    // get actual end of range
     uint dest = to >= prods.length ? prods.length : to;
+    // range difference
     uint diff = to - from;
+    // sometimes the range difference might be more 
+    // than the data length. In such cases, we provide a fallback
     diff = diff > dest ? dest : diff;  
 
     id = new uint[] (diff);
