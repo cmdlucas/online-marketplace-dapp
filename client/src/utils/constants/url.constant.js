@@ -5,9 +5,12 @@ export const createprofileurl = `/profile-create`;
 export const storefronturi = `/storefront`;
 export const storefronturl = (sfid, name) => `${storefronturi}/${sfid}/${name}`;
 export const createstorefronturl = `${storefronturi}/create`;
-export const createproducturl = (sfid, name) => `${storefronturi}/${sfid}/${name}/product/add`;
-export const editproducturl = (sfid, name, pid) => `${storefronturi}/${sfid}/${name}/product/edit/${pid}`;
-export const buyproducturl = (sfid, name, pid, price) => `${storefronturi}/${sfid}/${name}/product/buy/${pid}/${price}`;
+export const createproducturl = (sfid, name) =>
+  `${storefronturi}/${sfid}/${name}/product/add`;
+export const editproducturl = (sfid, name, pid) =>
+  `${storefronturi}/${sfid}/${name}/product/edit/${pid}`;
+export const buyproducturl = (sfid, name, pid, price) =>
+  `${storefronturi}/${sfid}/${name}/product/buy/${pid}/${price}`;
 
 // url matchers
 export const homematcher = homeurl;

@@ -6,15 +6,19 @@ import Nominator from "./views/home/Nominator";
 import ModalSelector from "./views/modals/ModalSelector";
 
 class App extends Component {
-  
-  state = {}
+  state = {};
 
-  setOwnState(state, callback = () => { }) {
+  setOwnState(state, callback = () => {}) {
     this.setState({ ...this.state, ...state }, callback);
   }
 
   resetLoadingState() {
-    this.setOwnState({ dAppLoading: true, dAppInit: false, dAppInitFailed: false, error: "" });
+    this.setOwnState({
+      dAppLoading: true,
+      dAppInit: false,
+      dAppInitFailed: false,
+      error: "",
+    });
   }
 
   loadDApp(force = false) {
@@ -23,7 +27,9 @@ class App extends Component {
     // Provision all dapp utils on window Object to provide quick accessibility
     // set app as initiated after successful provisioning
     // present error, if provisioning failed
-    activateDApp(force).then(() => this.setDAppInitiated()).catch(e => this.setDAppInitFailed(e));
+    activateDApp(force)
+      .then(() => this.setDAppInitiated())
+      .catch((e) => this.setDAppInitFailed(e));
   }
 
   setDAppInitiated() {
@@ -36,18 +42,31 @@ class App extends Component {
 
   componentDidMount() {
     this.loadDApp();
-  };
+  }
 
   render() {
     const { dAppLoading, dAppInitFailed, dAppInit, error } = this.state;
     return (
       <>
         {dAppLoading || dAppInitFailed ? (
-          <PreLoad dAppLoading={dAppLoading} dAppInitFailed={dAppInitFailed}
-            reloader={() => this.loadDApp(true)} error={error} />
-        ) : ""}
+          <PreLoad
+            dAppLoading={dAppLoading}
+            dAppInitFailed={dAppInitFailed}
+            reloader={() => this.loadDApp(true)}
+            error={error}
+          />
+        ) : (
+          ""
+        )}
 
-        { dAppInit ? <> <Nominator />  <ModalSelector /> </>: "" }
+        {dAppInit ? (
+          <>
+            {" "}
+            <Nominator /> <ModalSelector />{" "}
+          </>
+        ) : (
+          ""
+        )}
       </>
     );
   }

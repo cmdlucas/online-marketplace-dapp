@@ -1,5 +1,7 @@
 export const initialFormInputState = {
-    value: "", faulty: false, error: ""
-}
+  value: "",
+  faulty: false,
+  error: "",
+};
 
-export const cleanWhiteSpaces = text => (text.replace(/^ +$/, ""));
+export const cleanWhiteSpaces = (text) => text.replace(/^ +$/, "");
